@@ -1,8 +1,10 @@
 import express from 'express';
 import sql from 'mssql';
+import cors from 'cors';
 import {config} from './db/db-config';
 
 const app = express();
+app.use(cors({ origin: 'http://localhost:8080' }));
 
 // Use express.json() middleware to parse JSON payloads
 app.use(express.json());
@@ -14,6 +16,7 @@ sql.connect(config).then(pool => {
     // POST endpoint for creating a new story
     app.post('/stories', async (req, res) => {
         try {
+            console.log('Request received', req.body);
           const { story_guid, title, body_text, img_url, user_guid } = req.body;
       
           const created_at = new Date();
