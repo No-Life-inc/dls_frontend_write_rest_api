@@ -3,7 +3,7 @@ import sql from 'mssql';
 export const getUserById = async (pool: any, user_guid: any) => {
     return await pool.request()
         .input('user_guid', sql.UniqueIdentifier, user_guid)
-        .query('SELECT user_id, first_name, last_name, img_url FROM users WHERE user_guid = @user_guid');
+        .query('SELECT user_id, first_name, last_name, image_url as img_url, user_guid FROM users WHERE user_guid = @user_guid');
 };
 
 export const insertStory = async (pool: any, story_guid: any, title: any, body_text: any, img_url: any, created_at: any, user_id: any) => {
