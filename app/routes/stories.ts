@@ -27,7 +27,8 @@ router.post('/', async (req, res) => {
       const userObject = {
         user_guid: user.recordset[0].user_guid,
         first_name: `${user.recordset[0].name}`,
-        last_name: `${user.recordset[0].last_name}`
+        last_name: `${user.recordset[0].last_name}`,
+        img_url: `${user.recordset[0].img_url}`
       };
   
       // Then, insert the new story
@@ -37,7 +38,7 @@ router.post('/', async (req, res) => {
       if (result.rowsAffected[0] > 0) {
         const message = { story_guid, title, body_text, img_url, created_at, user: userObject};
         publishToQueue(message);
-        
+
           // Send a response back to the client
         res.status(201).send({ message: 'Story created successfully' });
         } else {
