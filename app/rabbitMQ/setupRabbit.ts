@@ -1,6 +1,13 @@
 import amqp from 'amqplib/callback_api';
+import { config } from 'dotenv';
 
-const AMQP_URL = 'amqp://user:password@localhost';
+config();
+
+const RABBIT_URL = process.env.RABBITURL
+const RABBIT_USER = process.env.RABBITUSER
+const RABBIT_PW = process.env.RABBITPW
+
+const AMQP_URL = `amqp://${RABBIT_USER}:${RABBIT_PW}@${RABBIT_URL}`;
 const QUEUE_NAME = 'new_stories';
 
 let channel: any = null;

@@ -7,13 +7,18 @@ import { config } from 'dotenv';
 
 config();
 
+const PORT = process.env.PORT || 3000;
+
+
+
+
 const app = express();
 app.use(cors({ origin: 'http://localhost:8080' }));
 
 // Use express.json() middleware to parse JSON payloads
 app.use(express.json());
 
-const PORT = 3000;
+
 
 setupRabbitMQ().then(() => {
   console.log('RabbitMQ setup completed');

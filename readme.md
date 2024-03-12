@@ -26,6 +26,7 @@ Create a .env in the root folder.
 - MSUSER: SA
 - MSPW: YourStrongPassword123
 - MSSERVER: localhost
+- MSDB: mssqlWrite
 - RABBITUSER: user
 - RABBITPW: password
 - RABBITURL: localhost
