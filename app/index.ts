@@ -3,6 +3,9 @@ import cors from 'cors';
 import { connectToDb } from './db/dbConnect';
 import { setupRabbitMQ, publishToQueue } from './rabbitMQ/setupRabbit';
 import storiesRouter from './routes/stories';
+import { config } from 'dotenv';
+
+config();
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:8080' }));
