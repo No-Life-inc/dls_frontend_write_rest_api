@@ -11,7 +11,7 @@
 
 This is the write REST API for our Frontend application.<br>
 It takes entities that has to be created or modified in the MSSQL Write-DB.<br>
-It is connected to a RabbitMQ queue whenever new entites or changes to existing entities occur, so that the new/updated entities are reflected in the read-only DB.
+It is connected to a RabbitMQ queue whenever new entites or changes to existing entities occur, so that the new/updated entities are reflected in the read-only DB<br>.
 The repo is divided into folders with the respective responsibilities within the app folder:
 
 - DB: Contains code and connection information for the MSSQL server.
