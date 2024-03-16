@@ -1,15 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import { connectToDb } from './db/dbConnect';
-import { setupRabbitMQ, publishToQueue } from './rabbitMQ/setupRabbit';
-import storiesRouter from './routes/stories';
+import { setupRabbitMQ } from './rabbitMQ/setupRabbit';
+import { RegisterRoutes } from './routes/routes';
 import { config } from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from '../dist/swagger.json';
 
 config();
 
 const PORT = process.env.PORT || 3000;
-
-
 
 
 const app = express();
@@ -30,8 +30,10 @@ connectToDb().then(pool => {
   // Attach the pool object to app.locals
   app.locals.pool = pool;
 
-  // Import your routes here
-  app.use('/stories', storiesRouter);
+  // Register tsoa routes
+  RegisterRoutes(app);
+
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 }).catch(err => {
