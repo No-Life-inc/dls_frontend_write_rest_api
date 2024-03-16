@@ -6,7 +6,7 @@
     "port": 1433,
     "username": "SA",
     "password": "YourStrongPassword123",
-    "database": "",
+    "database": "mssqlWrite",
     "synchronize": false,
     "entities": ["entities/*.js"]
   }

@@ -4,7 +4,7 @@ dotenv.config();
 
 const MS_USER = process.env.MSUSER || " ";
 const MS_PW = process.env.MSPW || " ";
-const MS_URL = process.env.MSURL || " ";
+const MS_URL = process.env.MSSERVER || " ";
 const MS_DB = process.env.MSDB || " ";
 
 export const db_config = {
