@@ -16,6 +16,7 @@ export class StoriesController {
     const storyRepository = getRepository(Stories);
     const story = storyRepository.create(requestBody);
     await storyRepository.save(story);
+    publishToQueue(story);
     return story;
   }
 }
