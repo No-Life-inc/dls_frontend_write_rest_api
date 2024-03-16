@@ -1,79 +1,43 @@
 import express from 'express';
-import { publishToQueue } from '../rabbitMQ/setupRabbit';
-import { getUserById, insertStory } from '../db/dbOperations';
-import { Route, Body, Post, SuccessResponse } from 'tsoa';
-import { getRepository } from 'typeorm';
 import { Stories } from '../entities/entities/Stories';
+import { Users } from '../entities/entities/Users';
+import { getRepository } from 'typeorm';
+import { publishToQueue } from '../rabbitMQ/setupRabbit';
+import { Body, Post, SuccessResponse, Route } from 'tsoa';
+import { insertStory, getUserById } from '../db/dbOperations';
+import { HttpError } from 'routing-controllers';
 
 const router = express.Router();
 
-// POST endpoint for creating a new story
-
-@Route('stories')
+@Route('/stories')
 export class StoriesController {
   @Post()
   public async createStory(@Body() requestBody: Stories): Promise<Stories> {
+    const userRepository = getRepository(Users);
+    const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid } });
+
+    if (!user) {
+      throw new HttpError(400, 'User not found');
+    }
+
     const storyRepository = getRepository(Stories);
-    const story = storyRepository.create(requestBody);
-    await storyRepository.save(story);
+    const story = new Stories();
+
+    // Copy over all the fields from requestBody to story
+    Object.assign(story, requestBody);
+
+    // Set the user field on the story
+    story.user = user;
+  
+    try {
+      await storyRepository.save(story);
+    } catch (error) {
+      throw new HttpError(400, 'Failed to create story');
+    }
+  
     publishToQueue(story);
     return story;
   }
 }
-
-// router.post('/', async (req, res) => {
-//     try {
-
-//         const pool = req.app.locals.pool;
-
-//         console.log('Request received', req.body);
-//       const { story_guid, title, body_text, img_url, user_guid } = req.body;
-  
-//       const created_at = new Date();
-  
-//       // First, get the user_id for the provided user_guid
-//       const user = await getUserById(pool, user_guid);
-  
-//       if (user.recordset.length === 0) {
-//         return res.status(404).send({ message: 'User not found' });
-//       }
-  
-//       const user_id = user.recordset[0].user_id;
-//       const userObject = {
-//         _id: user.recordset[0].user_guid,
-//         first_name: `${user.recordset[0].first_name}`,
-//         last_name: `${user.recordset[0].last_name}`,
-//         img_url: `${user.recordset[0].img_url}`
-//       };
-  
-//       // Then, insert the new story
-//       const result = await insertStory(pool, story_guid, title, body_text, img_url, created_at, user_id);
-
-//       // If the database operation was successful, publish a message to the queue
-//       if (result.rowsAffected[0] > 0) {
-//         const message = { 
-//             _id: story_guid, // Change 'story_guid' to 'id'
-//             title, 
-//             body_text, 
-//             img_url, 
-//             created_at, 
-//             user: userObject
-//           };
-//         publishToQueue(message);
-
-//           // Send a response back to the client
-//         res.status(201).send({ message: 'Story created successfully' });
-//         } else {
-//         // If the database operation was not successful, send an error response
-//         res.status(500).send({ message: 'Failed to create story' });
-//       } 
-      
-//     }
-//     catch (err) {
-//         console.error('SQL error', err);
-//         res.status(500).send({ message: 'Server error' });
-//       };
-//     }
-//     );
 
 export default router;

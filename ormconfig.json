@@ -8,6 +8,10 @@
     "password": "YourStrongPassword123",
     "database": "mssqlWrite",
     "synchronize": false,
-    "entities": ["entities/*.js"]
+    "entities": ["app/entities/entities/*.ts"],
+    "options": {
+      "encrypt": true,
+      "trustServerCertificate": true
+    }
   }
 ]

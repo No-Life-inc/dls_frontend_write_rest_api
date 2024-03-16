@@ -35,7 +35,7 @@ export class Stories {
   @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
   user: Users;
 
-  @OneToMany(() => StoryInfo, (storyInfo) => storyInfo.story)
+  @OneToMany(() => StoryInfo, (storyInfo) => storyInfo.story, { cascade: true }) //needs to be cascade for it to be created
   storyInfos: StoryInfo[];
 
   @OneToMany(() => StoryReaction, (storyReaction) => storyReaction.story)
