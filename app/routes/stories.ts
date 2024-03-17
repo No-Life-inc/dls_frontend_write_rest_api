@@ -9,6 +9,8 @@ import { HttpError } from 'routing-controllers';
 
 const router = express.Router();
 
+// TODO: Get Ropository from TypeORM is deprecated, use getCustomRepository instead
+// TODO: Use DTOs instead of Entities (Maybe)
 @Route('/stories')
 export class StoriesController {
   @Post()

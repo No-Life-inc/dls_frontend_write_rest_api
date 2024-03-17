@@ -28,7 +28,8 @@ setupRabbitMQ().then(() => {
   console.error('Failed to setup RabbitMQ', err);
 });
 
-
+// TODO: createConnection is deprecated, What else can be used?
+// TODO: ormconfig.json has to use the environment variables
 createConnection().then(async connection => {
   // Your previous setup code here
   RegisterRoutes(app);
