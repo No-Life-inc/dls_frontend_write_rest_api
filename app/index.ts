@@ -5,19 +5,23 @@ import { setupRabbitMQ, publishToQueue } from './rabbitMQ/setupRabbit';
 import storiesRouter from './routes/stories';
 import { config } from 'dotenv';
 
+/***
+ * Load environment variables from a .env file into process.env
+ */
 config();
 
 const PORT = process.env.PORT || 3000;
 
-
-
-
+/***
+ * Create an instance of express
+ */
 const app = express();
 app.use(cors({ origin: 'http://localhost:8080' }));
 
-// Use express.json() middleware to parse JSON payloads
+/***
+ * Middleware to parse the request body as JSON
+ */
 app.use(express.json());
-
 
 
 setupRabbitMQ().then(() => {

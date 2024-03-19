@@ -5,7 +5,12 @@ import { getUserById, insertStory } from '../db/dbOperations';
 const router = express.Router();
 
 // POST endpoint for creating a new story
-
+/***
+ * @swagger
+ * /stories:
+ *  post:
+ *    summary: "Create a new story
+ */
 router.post('/', async (req, res) => {
     try {
 

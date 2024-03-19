@@ -3,15 +3,24 @@ import { config } from 'dotenv';
 
 config();
 
+/***
+ * RabbitMQ configuration
+ */
 const RABBIT_URL = process.env.RABBITURL
 const RABBIT_USER = process.env.RABBITUSER
 const RABBIT_PW = process.env.RABBITPW
 
+/***
+ * RabbitMQ configuration
+ */
 const AMQP_URL = `amqp://${RABBIT_USER}:${RABBIT_PW}@${RABBIT_URL}`;
 const QUEUE_NAME = 'new_stories';
 
 let channel: any = null;
 
+/***
+ * Set up RabbitMQ
+ */
 export function setupRabbitMQ() {
   return new Promise<void>((resolve, reject) => {
     amqp.connect(AMQP_URL, (error0, connection) => {
@@ -37,6 +46,9 @@ export function setupRabbitMQ() {
   });
 }
 
+/***
+ * Publish a message to the queue
+ */
 export function publishToQueue(message: any) {
   if (!channel) {
     console.error('RabbitMQ channel is not set up. Call setupRabbitMQ first.');
