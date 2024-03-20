@@ -5,9 +5,8 @@ import { setupRabbitMQ } from './rabbitMQ/setupRabbit';
 import { RegisterRoutes } from './routes/routes';
 import { config } from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
-import * as swaggerDocument from '../dist/swagger.json';
-import { createConnection } from 'typeorm';
-
+import * as swaggerDocument from "../dist/swagger.json";
+import connectDB from './config/ormconfig';
 
 config();
 
@@ -30,11 +29,19 @@ setupRabbitMQ().then(() => {
 
 // TODO: createConnection is deprecated, What else can be used?
 // TODO: ormconfig.json has to use the environment variables
-createConnection().then(async connection => {
+/* createConnection().then(async connection => {
   // Your previous setup code here
   RegisterRoutes(app);
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.listen(3000, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-}).catch(error => console.log(error));
+}).catch(error => console.log(error)); */
+
+connectDB.initialize().then(async () => {
+  RegisterRoutes(app);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.listen(3000, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+});
