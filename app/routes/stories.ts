@@ -2,10 +2,11 @@ import express from 'express';
 import { Stories } from '../entities/entities/Stories';
 import { Users } from '../entities/entities/Users';
 import { getRepository } from 'typeorm';
-import { publishToQueue } from '../rabbitMQ/setupRabbit';
-import { Body, Post, SuccessResponse, Route } from 'tsoa';
-import { insertStory, getUserById } from '../db/dbOperations';
+import publishNewStory from '../rabbitMQ/publishNewStory';
+import { Body, Post, Route } from 'tsoa';
 import { HttpError } from 'routing-controllers';
+import { CreateStoryDTO } from '../entities/DTOs/createStoryDTO';
+import { getConnection } from 'typeorm';
 
 const router = express.Router();
 
@@ -14,7 +15,8 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: Stories): Promise<Stories> {
+  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<Stories> {
+    console.log('Request body:', requestBody); // Log the request body
     const userRepository = getRepository(Users);
     const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid } });
 
@@ -23,22 +25,17 @@ export class StoriesController {
     }
 
     const storyRepository = getRepository(Stories);
-    const story = new Stories();
-
-    // Copy over all the fields from requestBody to story
-    Object.assign(story, requestBody);
-
-    // Set the user field on the story
-    story.user = user;
+    let newStory = new Stories(requestBody);
+    newStory.user = user;
   
     try {
-      await storyRepository.save(story);
+      await storyRepository.save(newStory);
     } catch (error) {
       throw new HttpError(400, 'Failed to create story');
     }
   
-    publishToQueue(story);
-    return story;
+    publishNewStory(newStory);
+    return newStory;
   }
 }
 

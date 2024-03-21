@@ -6,10 +6,14 @@ dotenv.config();
 const connectDB = new DataSource({
     type: "mssql",
     host: process.env.MSSERVER,
-    port: parseInt(process.env.DB_PORT || "3000"),
+    port: parseInt(process.env.DB_PORT || "1433"),
     username: process.env.MSUSER,
     password: process.env.MSPW,
-    database: process.env.MSDB
+    database: process.env.MSDB,
+    options: {
+        encrypt: true,
+        trustServerCertificate: true
+    }
 });
 
 connectDB.initialize().then(()=>{

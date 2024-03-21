@@ -195,6 +195,35 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateStoryDTOUser": {
+        "dataType": "refObject",
+        "properties": {
+            "userGuid": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateStoryDTOStoryInfo": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string","required":true},
+            "bodyText": {"dataType":"string","required":true},
+            "imgUrl": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateStoryDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "storyGuid": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "user": {"ref":"CreateStoryDTOUser","required":true},
+            "storyInfo": {"ref":"CreateStoryDTOStoryInfo","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras"});
 
@@ -211,7 +240,7 @@ export function RegisterRoutes(app: Router) {
 
             function StoriesController_createStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"Stories"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateStoryDTO"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -231,6 +260,8 @@ export function RegisterRoutes(app: Router) {
                 successStatus: undefined,
               });
             } catch (err) {
+                console.error(err);
+                console.log(request.body);
                 return next(err);
             }
         });

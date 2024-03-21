@@ -25,6 +25,7 @@ export class Users  extends BaseEntity {
   @Column("uniqueidentifier", { name: "user_guid" })
   userGuid: string | null;
 
+  
   @Column("datetime", { name: "created_at" })
   createdAt: Date | null;
 

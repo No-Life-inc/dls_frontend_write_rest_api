@@ -27,3 +27,6 @@ export function publishNewStory(story: Stories) {
     console.error('Failed to get channel for new_stories');
   }
 }
+
+// Export the function
+export default publishNewStory;
