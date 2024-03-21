@@ -224,6 +224,11 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Partial_StoryInfo_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"storyInfoId":{"dataType":"double"},"title":{"dataType":"string"},"bodyText":{"dataType":"string"},"imgUrl":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"story":{"ref":"Stories"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras"});
 
@@ -260,8 +265,37 @@ export function RegisterRoutes(app: Router) {
                 successStatus: undefined,
               });
             } catch (err) {
-                console.error(err);
-                console.log(request.body);
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/stories/:storyGuid',
+            ...(fetchMiddlewares<RequestHandler>(StoriesController)),
+            ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.updateStory)),
+
+            function StoriesController_updateStory(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
+                    storyData: {"in":"body","name":"storyData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"storyInfos":{"dataType":"array","array":{"dataType":"refAlias","ref":"Partial_StoryInfo_"},"required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new StoriesController();
+
+              templateService.apiHandler({
+                methodName: 'updateStory',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
                 return next(err);
             }
         });
