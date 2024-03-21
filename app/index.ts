@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { connectToDb } from './db/dbConnect';
-import { setupRabbitMQ } from './rabbitMQ/setupRabbit';
+import { QueueManager } from './rabbitMQ/setupRabbit';
 import { RegisterRoutes } from './routes/routes';
 import { config } from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
@@ -21,7 +21,9 @@ app.use(express.json());
 
 
 
-setupRabbitMQ().then(() => {
+// Get the QueueManager instance and set up the queue
+const queueManager = QueueManager.getInstance();
+queueManager.setupQueue('new_stories').then((ch) => {
   console.log('RabbitMQ setup completed');
 }).catch(err => {
   console.error('Failed to setup RabbitMQ', err);
