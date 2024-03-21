@@ -18,7 +18,7 @@ export class StoriesController {
   public async createStory(@Body() requestBody: CreateStoryDTO): Promise<Stories> {
     console.log('Request body:', requestBody); // Log the request body
     const userRepository = getRepository(Users);
-    const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid } });
+    const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }, relations: ['userInfos']});
 
     if (!user) {
       throw new HttpError(400, 'User not found');

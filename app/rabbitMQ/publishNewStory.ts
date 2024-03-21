@@ -4,12 +4,14 @@ import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
 // Get the QueueManager instance and set up the queue
 const queueManager = QueueManager.getInstance();
-queueManager.setupQueue('new_stories').then((ch) => {
-  console.log('RabbitMQ setup completed');
-}).catch(err => {
-  console.error('Failed to setup RabbitMQ', err);
-});
-
+queueManager
+  .setupQueue("new_stories")
+  .then((ch) => {
+    console.log("RabbitMQ setup completed");
+  })
+  .catch((err) => {
+    console.error("Failed to setup RabbitMQ", err);
+  });
 
 /**
  * Function to publish a new story to the RabbitMQ queue
@@ -17,14 +19,35 @@ queueManager.setupQueue('new_stories').then((ch) => {
  * @returns void
  */
 export function publishNewStory(story: Stories) {
+  // Create a new object with the desired structure
+  const storyForMongoDB = {
+    storyGuid: story.storyGuid,
+    user: {
+      userGuid: story.user.userGuid,
+      userInfo: story.user.userInfos.map((info) => ({
+        firstName: info.firstName,
+        lastName: info.lastName,
+        imgUrl: info.imgUrl,
+        createdAt: info.createdAt,
+      })),
+    },
+    createdAt: story.createdAt,
+    storyInfos: story.storyInfos.map((info) => ({
+      title: info.title,
+      bodyText: info.bodyText,
+      imgUrl: info.imgUrl,
+      createdAt: info.createdAt,
+    })),
+  };
+
   // Get the channel from the QueueManager instance
-  const channel = queueManager.getChannel('new_stories');
-  
+  const channel = queueManager.getChannel("new_stories");
+
   // Pass the channel as the second argument to publishToQueue
   if (channel) {
-    publishToQueue(story, channel, 'new_stories');
+    publishToQueue(storyForMongoDB, channel, "new_stories");
   } else {
-    console.error('Failed to get channel for new_stories');
+    console.error("Failed to get channel for new_stories");
   }
 }
 
