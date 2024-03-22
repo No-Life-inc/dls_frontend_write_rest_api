@@ -2,16 +2,7 @@ import { Stories } from "../entities/entities/Stories";
 import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
-// Get the QueueManager instance and set up the queue
-const queueManager = QueueManager.getInstance();
-// queueManager
-//   .setupQueue("new_stories")
-//   .then((ch) => {
-//     console.log("RabbitMQ setup completed");
-//   })
-//   .catch((err) => {
-//     console.error("Failed to setup RabbitMQ", err);
-//   });
+
 
 /**
  * Function to publish a new story to the RabbitMQ queue
@@ -19,6 +10,9 @@ const queueManager = QueueManager.getInstance();
  * @returns void
  */
 export function publishNewStory(story: Stories) {
+  // Get the QueueManager instance and set up the queue
+  const queueManager = QueueManager.getInstance();
+
   // Create a new object with the desired structure
   const storyForMongoDB = {
     storyGuid: story.storyGuid,

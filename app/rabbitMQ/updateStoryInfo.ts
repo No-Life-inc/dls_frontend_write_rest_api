@@ -3,19 +3,12 @@ import { StoryInfo } from "../entities/entities/StoryInfo";
 import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
-// Get the QueueManager instance and set up the queue
-const queueManager = QueueManager.getInstance();
-// queueManager
-//   .setupQueue("update_story_info")
-//   .then((ch) => {
-//     console.log("RabbitMQ setup completed");
-//   })
-//   .catch((err) => {
-//     console.error("Failed to setup RabbitMQ", err);
-//   });
 
 
   export function updateStoryInfo(storyGuid: String,updatedStoryInfo: Partial<StoryInfo>) {
+    // Get the QueueManager instance and set up the queue
+    const queueManager = QueueManager.getInstance();
+
     const storyForMongoDB = {
         storyGuid: storyGuid,
         storyInfos: updatedStoryInfo,
