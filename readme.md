@@ -23,10 +23,10 @@ The repo is divided into folders with the respective responsibilities within the
 Create a .env in the root folder.
 
 - PORT=3000
-- MSUSER=SA
-- MSPW=YourStrongPassword123
-- MSSERVER=localhost
-- MSDB=mssqlWrite
+- DB_USER=SA
+- DB_PASSWORD=YourStrongPassword123
+- DB_SERVER=localhost
+- DB_FRONTEND=mssqlWrite
 - RABBITUSER=user
 - RABBITPW=password
 - RABBITURL=localhost
