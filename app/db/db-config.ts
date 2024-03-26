@@ -5,10 +5,10 @@ dotenv.config();
 /**
  *  Database configuration
  */
-const MS_USER = process.env.MSUSER || " ";
-const MS_PW = process.env.MSPW || " ";
-const MS_URL = process.env.MSURL || " ";
-const MS_DB = process.env.MSDB || " ";
+const MS_USER = process.env.DB_USER || " ";
+const MS_PW = process.env.DB_PASSWORD || " ";
+const MS_URL = process.env.DB_SERVER || " ";
+const MS_DB = process.env.DB_FRONTEND || " ";
 
 /**
  *  RabbitMQ configuration
