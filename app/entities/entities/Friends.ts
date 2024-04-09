@@ -3,28 +3,25 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToOne,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { FriendList } from "./FriendList";
 import { Users } from "./Users";
 
-@Index("PK__friends__3FA1E15546C7C974", ["friendId"], { unique: true })
+
+@Index("PK__friends__3FA1E15546C7C974", ["friendshipId"], { unique: true })
 @Entity("friends", { schema: "dbo" })
 export class Friends {
-  @PrimaryGeneratedColumn({ type: "int", name: "friend_id" })
-  friendId: number;
+  @PrimaryGeneratedColumn({ type: "int", name: "friendship_id" })
+  friendship_id: number;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
-  @ManyToOne(() => FriendList, (friendList) => friendList.friends)
-  @JoinColumn([
-    { name: "friend_list_id", referencedColumnName: "friendListId" },
-  ])
-  friendList: FriendList;
+  @ManyToMany(() => Users, (users) => users.user)
+  users: Users[];
 
-  @ManyToOne(() => Users, (users) => users.friends)
-  @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
-  user: Users;
+  @ManyToMany(() => Users, (users) => users.friends)
+  friends: Users[];
+
 }

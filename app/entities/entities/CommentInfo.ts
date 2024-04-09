@@ -17,8 +17,8 @@ export class CommentInfo {
   @Column("nvarchar", { name: "body_text", nullable: true })
   bodyText: string | null;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
   @ManyToOne(() => Comments, (comments) => comments.commentInfos)
   @JoinColumn([{ name: "comment_id", referencedColumnName: "commentId" }])

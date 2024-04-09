@@ -3,7 +3,7 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Users } from "./Users";
@@ -26,10 +26,10 @@ export class UserInfo {
   @Column("nvarchar", { name: "email", nullable: true, length: 255 })
   email: string | null;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
-  @ManyToOne(() => Users, (users) => users.userInfos)
-  @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
-  user: Users;
+  @OneToOne(() => Users)
+  @JoinColumn()
+  user: Users
 }

@@ -21,8 +21,8 @@ export class Comments {
   @Column("uniqueidentifier", { name: "comment_guid", nullable: true })
   commentGuid: string | null;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
   @OneToMany(() => CommentInfo, (commentInfo) => commentInfo.comment)
   commentInfos: CommentInfo[];

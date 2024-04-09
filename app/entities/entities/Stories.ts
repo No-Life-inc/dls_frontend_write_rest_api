@@ -39,8 +39,8 @@ export class Stories {
   @Column("uniqueidentifier", { name: "story_guid", nullable: true })
   storyGuid: string | null;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
   @OneToMany(() => Comments, (comments) => comments.story)
   comments: Comments[];

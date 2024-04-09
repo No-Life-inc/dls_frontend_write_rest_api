@@ -2,12 +2,11 @@ import {
   Column,
   Entity,
   Index,
-  JoinColumn,
-  ManyToOne,
+  ManyToMany,
   PrimaryGeneratedColumn,
-} from "typeorm";
-import { BlockedList } from "./BlockedList";
+} from "typeorm"
 import { Users } from "./Users";
+
 
 @Index("PK__blocked__BEC6BFD992D3612C", ["blockedId"], { unique: true })
 @Entity("blocked", { schema: "dbo" })
@@ -15,16 +14,13 @@ export class Blocked {
   @PrimaryGeneratedColumn({ type: "int", name: "blocked_id" })
   blockedId: number;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
-  @ManyToOne(() => BlockedList, (blockedList) => blockedList.blockeds)
-  @JoinColumn([
-    { name: "blocked_list_id", referencedColumnName: "blockedListId" },
-  ])
-  blockedList: BlockedList;
+  @ManyToMany(() => Users, (users) => users.blockedBy)
+  users: Users[];
 
-  @ManyToOne(() => Users, (users) => users.blockeds)
-  @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
-  user: Users;
+  @ManyToMany(() => Users, (users) => users.blocked)
+  blocked: Users[];
+
 }

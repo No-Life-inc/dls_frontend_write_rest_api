@@ -23,8 +23,8 @@ export class StoryInfo {
   @Column("nvarchar", { name: "img_url", nullable: true, length: 255 })
   imgUrl: string | null;
 
-  @Column("datetime", { name: "created_at", nullable: true })
-  createdAt: Date | null;
+  @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
+  createdAt: Date;
 
   @ManyToOne(() => Stories, (stories) => stories.storyInfos)
   @JoinColumn([{ name: "story_id", referencedColumnName: "storyId" }])
