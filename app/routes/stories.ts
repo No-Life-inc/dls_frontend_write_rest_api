@@ -6,8 +6,6 @@ import { getRepository } from 'typeorm';
 import publishNewStory from '../rabbitMQ/publishNewStory';
 import { Body, Post, Route, Path, Put } from 'tsoa';
 import { HttpError } from 'routing-controllers';
-import { CreateStoryDTO } from '../entities/DTOs/createStoryDTO';
-import { getConnection } from 'typeorm';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
 import { StoryDTO } from '../entities/DTOs/StoryDTO';
 
@@ -18,7 +16,7 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<StoryDTO> {
+  public async createStory(@Body() requestBody: StoryDTO): Promise<StoryDTO> {
     console.log('Request body:', requestBody); // Log the request body
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }, relations: ['userInfos']});

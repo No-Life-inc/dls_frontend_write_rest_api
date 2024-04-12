@@ -13,25 +13,27 @@ import { User } from "./User";
 import { StoryInfo } from "./StoryInfo";
 import { StoryReaction } from "./StoryReaction";
 import { CreateStoryDTO } from "../DTOs/createStoryDTO";
+import { StoryDTO } from "../DTOs/StoryDTO";
 
 @Index("PK__stories__66339C5618AA3FAD", ["storyId"], { unique: true })
 @Entity("stories", { schema: "dbo" })
 export class Story {
 
-  constructor(dto?: CreateStoryDTO) {
+  constructor(dto?: StoryDTO) {
     if (dto) {
       this.storyGuid = dto.storyGuid;
       this.createdAt = dto.createdAt;
       this.user = new User();
       this.user.userGuid = dto.user.userGuid;
-      let storyInfo = new StoryInfo();
-      storyInfo.title = dto.storyInfo.title;
-      storyInfo.bodyText = dto.storyInfo.bodyText;
-      storyInfo.imgUrl = dto.storyInfo.imgUrl;
-      this.storyInfos = [storyInfo];
+      this.storyInfos = dto.storyInfos.map(storyInfoDTO => {
+        let storyInfo = new StoryInfo();
+        storyInfo.title = storyInfoDTO.title;
+        storyInfo.bodyText = storyInfoDTO.bodyText;
+        storyInfo.imgUrl = storyInfoDTO.imgUrl;
+        return storyInfo;
+      });
     }
   }
-
 
   @PrimaryGeneratedColumn({ type: "int", name: "story_id" })
   storyId: number;
