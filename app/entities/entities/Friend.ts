@@ -6,7 +6,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Users } from "./Users";
+import { Users } from "./User";
 
 
 @Index("PK__friends__3FA1E15546C7C974", ["friendshipId"], { unique: true })

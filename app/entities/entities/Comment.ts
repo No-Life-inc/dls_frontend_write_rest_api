@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 import { CommentInfo } from "./CommentInfo";
 import { CommentReaction } from "./CommentReaction";
-import { Users } from "./Users";
-import { Stories } from "./Stories";
+import { Users } from "./User";
+import { Stories } from "./Story";
 
 @Index("PK__comments__E7957687F2C0A46A", ["commentId"], { unique: true })
 @Entity("comments", { schema: "dbo" })

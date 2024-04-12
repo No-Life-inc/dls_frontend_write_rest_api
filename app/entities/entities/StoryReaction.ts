@@ -5,8 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Stories } from "./Stories";
-import { Reactions } from "./Reactions";
+import { Stories } from "./Story";
+import { Reactions } from "./Reaction";
 
 @Index("PK__story_re__34E334265353C38F", ["storyReactionId"], { unique: true })
 @Entity("story_reaction", { schema: "dbo" })

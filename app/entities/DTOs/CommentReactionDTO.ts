@@ -1,7 +1,7 @@
 import { IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CommentsDTO } from './CommentsDTO';
-import { ReactionsDTO } from './ReactionsDTO';
+import { CommentsDTO } from './CommentDTO';
+import { ReactionsDTO } from './ReactionDTO';
 
 export class CommentReactionDTO {
   @IsOptional()

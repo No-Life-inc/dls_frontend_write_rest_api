@@ -1,6 +1,6 @@
 import { IsOptional, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UsersDTO } from './UsersDTO';
+import { UsersDTO } from './UserDTO';
 
 export class BlockedDTO {
   @IsOptional()

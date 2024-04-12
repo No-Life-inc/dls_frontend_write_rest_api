@@ -4,7 +4,7 @@ import {
   JoinColumn,
   PrimaryColumn,
   OneToOne } from "typeorm";
-import { Users } from "./Users";
+import { Users } from "./User";
 
 @Entity("user_deleted", { schema: "dbo" })
 export class UserDeleted {

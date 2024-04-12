@@ -7,9 +7,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Comments } from "./Comments";
-import { Reactions } from "./Reactions";
-import { Users } from "./Users";
+import { Comments } from "./Comment";
+import { Reactions } from "./Reaction";
+import { Users } from "./User";
 import { StoryInfo } from "./StoryInfo";
 import { StoryReaction } from "./StoryReaction";
 import { CreateStoryDTO } from "../DTOs/createStoryDTO";

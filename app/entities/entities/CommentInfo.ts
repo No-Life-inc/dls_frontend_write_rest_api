@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Comments } from "./Comments";
+import { Comments } from "./Comment";
 
 @Index("PK__comment___CAA6633B2B74079B", ["commentInfoId"], { unique: true })
 @Entity("comment_info", { schema: "dbo" })

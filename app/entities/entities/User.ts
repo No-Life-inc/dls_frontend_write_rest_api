@@ -9,10 +9,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Blocked } from "./Blocked";
-import { Comments } from "./Comments";
-import { Friends } from "./Friends";
-import { Reactions } from "./Reactions";
-import { Stories } from "./Stories";
+import { Comments } from "./Comment";
+import { Friends } from "./Friend";
+import { Reactions } from "./Reaction";
+import { Stories } from "./Story";
 
 @Index("PK__users__B9BE370FB856433B", ["userId"], { unique: true })
 @Entity("users", { schema: "dbo" })

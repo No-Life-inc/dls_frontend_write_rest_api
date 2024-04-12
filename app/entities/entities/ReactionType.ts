@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Reactions } from "./Reactions";
+import { Reactions } from "./Reaction";
 
 @Index("PK__reaction__4D63FB6A03226554", ["reactionTypeId"], { unique: true })
 @Entity("reaction_type", { schema: "dbo" })

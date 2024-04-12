@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { CommentReaction } from "./CommentReaction";
-import { Users } from "./Users";
-import { Stories } from "./Stories";
+import { Users } from "./User";
+import { Stories } from "./Story";
 import { ReactionType } from "./ReactionType";
 import { StoryReaction } from "./StoryReaction";
 

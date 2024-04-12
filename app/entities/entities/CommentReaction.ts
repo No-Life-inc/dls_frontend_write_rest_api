@@ -5,8 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Comments } from "./Comments";
-import { Reactions } from "./Reactions";
+import { Comments } from "./Comment";
+import { Reactions } from "./Reaction";
 
 @Index("PK__comment___0F7A9DF96515BC92", ["commentReactionId"], {
   unique: true,

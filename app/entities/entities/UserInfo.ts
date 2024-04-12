@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Users } from "./Users";
+import { Users } from "./User";
 
 @Index("PK__user_inf__82ABEB54C83549E9", ["userInfoId"], { unique: true })
 @Entity("user_info", { schema: "dbo" })

@@ -3,13 +3,13 @@ import { IsString, IsOptional } from 'class-validator';
 export class ReactionTypeDTO {
   @IsString()
   @IsOptional()
-  reactionTypeName: string | null;
+  reactionTypeName: string;
 
   @IsString()
   @IsOptional()
-  reactionTypeImg: string | null;
+  reactionTypeImg: string;
 
-  constructor(reactionTypeName: string | null, reactionTypeImg: string | null) {
+  constructor(reactionTypeName: string, reactionTypeImg: string) {
     this.reactionTypeName = reactionTypeName;
     this.reactionTypeImg = reactionTypeImg;
   }

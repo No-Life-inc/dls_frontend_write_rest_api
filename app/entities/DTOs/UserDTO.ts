@@ -1,10 +1,10 @@
 import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { BlockedDTO } from './BlockedDTO';
-import { CommentsDTO } from './CommentsDTO';
-import { FriendsDTO } from './FriendsDTO';
-import { ReactionsDTO } from './ReactionsDTO';
-import { StoriesDTO } from './StoriesDTO';
+import { CommentsDTO } from './CommentDTO';
+import { FriendsDTO } from './FriendDTO';
+import { ReactionsDTO } from './ReactionDTO';
+import { StoriesDTO } from './StoryDTO';
 
 export class UsersDTO {
   @IsOptional()
@@ -12,7 +12,7 @@ export class UsersDTO {
 
   @IsString()
   @IsOptional()
-  userGuid: string | null;
+  userGuid: string;
 
   @IsDate()
   createdAt: Date;
@@ -45,7 +45,7 @@ export class UsersDTO {
   @Type(() => FriendsDTO)
   friends: FriendsDTO[];
 
-  constructor(userId: number, userGuid: string | null, createdAt: Date, comments: CommentsDTO[], reactions: ReactionsDTO[], stories: StoriesDTO[], blockedBy: BlockedDTO[], blocked: BlockedDTO[], user: FriendsDTO[], friends: FriendsDTO[]) {
+  constructor(userId: number, userGuid: string, createdAt: Date, comments: CommentsDTO[], reactions: ReactionsDTO[], stories: StoriesDTO[], blockedBy: BlockedDTO[], blocked: BlockedDTO[], user: FriendsDTO[], friends: FriendsDTO[]) {
     this.userId = userId;
     this.userGuid = userGuid;
     this.createdAt = createdAt;

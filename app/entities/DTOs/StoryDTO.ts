@@ -1,8 +1,8 @@
 import { IsString, IsDate, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CommentsDTO } from './CommentsDTO';
-import { ReactionsDTO } from './ReactionsDTO';
-import { UsersDTO } from './UsersDTO';
+import { CommentsDTO } from './CommentDTO';
+import { ReactionsDTO } from './ReactionDTO';
+import { UsersDTO } from './UserDTO';
 import { StoryInfoDTO } from './StoryInfoDTO';
 import { StoryReactionDTO } from './StoryReactionDTO';
 
@@ -12,7 +12,7 @@ export class StoriesDTO {
 
   @IsString()
   @IsOptional()
-  storyGuid: string | null;
+  storyGuid: string;
 
   @IsDate()
   createdAt: Date;
@@ -37,7 +37,7 @@ export class StoriesDTO {
   @Type(() => StoryReactionDTO)
   storyReactions: StoryReactionDTO[];
 
-  constructor(storyId: number, storyGuid: string | null, createdAt: Date, user: UsersDTO, comments: CommentsDTO[], reactions: ReactionsDTO[], storyInfos: StoryInfoDTO[], storyReactions: StoryReactionDTO[]) {
+  constructor(storyId: number, storyGuid: string, createdAt: Date, user: UsersDTO, comments: CommentsDTO[], reactions: ReactionsDTO[], storyInfos: StoryInfoDTO[], storyReactions: StoryReactionDTO[]) {
     this.storyId = storyId;
     this.storyGuid = storyGuid;
     this.createdAt = createdAt;

@@ -5,7 +5,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { Users } from "./Users";
+import { Users } from "./User";
 
 
 @Index("PK__blocked__BEC6BFD992D3612C", ["blockedId"], { unique: true })

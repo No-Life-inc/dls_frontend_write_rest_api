@@ -3,11 +3,11 @@ import { IsString, IsOptional, IsDate, IsInt } from 'class-validator';
 export class StoryInfoDTO {
   @IsString()
   @IsOptional()
-  title: string | null;
+  title: string;
 
   @IsString()
   @IsOptional()
-  bodyText: string | null;
+  bodyText: string;
 
   @IsString()
   @IsOptional()
@@ -20,7 +20,7 @@ export class StoryInfoDTO {
   @IsInt()
   storyId: number;
 
-  constructor(title: string | null, bodyText: string | null, imgUrl: string | null, createdAt: Date, storyId: number) {
+  constructor(title: string, bodyText: string, imgUrl: string | null, createdAt: Date, storyId: number) {
     this.title = title;
     this.bodyText = bodyText;
     this.imgUrl = imgUrl;

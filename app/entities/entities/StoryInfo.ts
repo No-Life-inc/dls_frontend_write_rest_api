@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Stories } from "./Stories";
+import { Stories } from "./Story";
 
 @Index("PK__story_in__3B3D55ED8A13B44A", ["storyInfoId"], { unique: true })
 @Entity("story_info", { schema: "dbo" })
