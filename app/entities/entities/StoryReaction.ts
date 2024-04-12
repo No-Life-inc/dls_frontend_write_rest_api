@@ -5,8 +5,8 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Stories } from "./Story";
-import { Reactions } from "./Reaction";
+import { Story } from "./Story";
+import { Reaction } from "./Reaction";
 
 @Index("PK__story_re__34E334265353C38F", ["storyReactionId"], { unique: true })
 @Entity("story_reaction", { schema: "dbo" })
@@ -14,11 +14,11 @@ export class StoryReaction {
   @PrimaryGeneratedColumn({ type: "int", name: "story_reaction_id" })
   storyReactionId: number;
 
-  @ManyToOne(() => Stories, (stories) => stories.storyReactions)
+  @ManyToOne(() => Story, (stories) => stories.storyReactions)
   @JoinColumn([{ name: "story_id", referencedColumnName: "storyId" }])
-  story: Stories;
+  story: Story;
 
-  @ManyToOne(() => Reactions, (reactions) => reactions.storyReactions)
+  @ManyToOne(() => Reaction, (reactions) => reactions.storyReactions)
   @JoinColumn([{ name: "reaction_id", referencedColumnName: "reactionId" }])
-  reaction: Reactions;
+  reaction: Reaction;
 }

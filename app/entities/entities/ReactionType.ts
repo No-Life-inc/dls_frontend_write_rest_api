@@ -5,7 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Reactions } from "./Reaction";
+import { Reaction } from "./Reaction";
 
 @Index("PK__reaction__4D63FB6A03226554", ["reactionTypeId"], { unique: true })
 @Entity("reaction_type", { schema: "dbo" })
@@ -18,15 +18,15 @@ export class ReactionType {
     nullable: true,
     length: 255,
   })
-  reactionTypeName: string | null;
+  reactionTypeName: string;
 
   @Column("nvarchar", {
     name: "reaction_type_img",
     nullable: true,
     length: 255,
   })
-  reactionTypeImg: string | null;
+  reactionTypeImg: string;
 
-  @OneToMany(() => Reactions, (reactions) => reactions.reactionType)
-  reactions: Reactions[];
+  @OneToMany(() => Reaction, (reactions) => reactions.reactionType)
+  reactions: Reaction[];
 }

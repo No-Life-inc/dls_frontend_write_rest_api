@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Comments } from "./Comment";
+import { Comment } from "./Comment";
 
 @Index("PK__comment___CAA6633B2B74079B", ["commentInfoId"], { unique: true })
 @Entity("comment_info", { schema: "dbo" })
@@ -15,12 +15,12 @@ export class CommentInfo {
   commentInfoId: number;
 
   @Column("nvarchar", { name: "body_text", nullable: true })
-  bodyText: string | null;
+  bodyText: string;
 
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @ManyToOne(() => Comments, (comments) => comments.commentInfos)
+  @ManyToOne(() => Comment, (comments) => comments.commentInfos)
   @JoinColumn([{ name: "comment_id", referencedColumnName: "commentId" }])
-  comment: Comments;
+  comment: Comment;
 }

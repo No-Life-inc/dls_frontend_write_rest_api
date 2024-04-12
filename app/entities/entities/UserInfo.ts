@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Users } from "./User";
+import { User } from "./User";
 
 @Index("PK__user_inf__82ABEB54C83549E9", ["userInfoId"], { unique: true })
 @Entity("user_info", { schema: "dbo" })
@@ -15,21 +15,21 @@ export class UserInfo {
   userInfoId: number;
 
   @Column("nvarchar", { name: "first_name", nullable: true, length: 255 })
-  firstName: string | null;
+  firstName: string;
 
   @Column("nvarchar", { name: "last_name", nullable: true, length: 255 })
-  lastName: string | null;
+  lastName: string;
 
   @Column("nvarchar", { name: "img_url", nullable: true, length: 255 })
   imgUrl: string | null;
 
   @Column("nvarchar", { name: "email", nullable: true, length: 255 })
-  email: string | null;
+  email: string;
 
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @OneToOne(() => Users)
+  @OneToOne(() => User)
   @JoinColumn()
-  user: Users
+  user: User
 }

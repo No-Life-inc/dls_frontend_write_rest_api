@@ -5,7 +5,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm"
-import { Users } from "./User";
+import { User } from "./User";
 
 
 @Index("PK__blocked__BEC6BFD992D3612C", ["blockedId"], { unique: true })
@@ -17,10 +17,10 @@ export class Blocked {
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @ManyToMany(() => Users, (users) => users.blockedBy)
-  users: Users[];
+  @ManyToMany(() => User, (users) => users.blockedBy)
+  users: User[];
 
-  @ManyToMany(() => Users, (users) => users.blocked)
-  blocked: Users[];
+  @ManyToMany(() => User, (users) => users.blocked)
+  blocked: User[];
 
 }

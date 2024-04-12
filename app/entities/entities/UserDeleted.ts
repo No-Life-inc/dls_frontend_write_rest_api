@@ -4,7 +4,7 @@ import {
   JoinColumn,
   PrimaryColumn,
   OneToOne } from "typeorm";
-import { Users } from "./User";
+import { User } from "./User";
 
 @Entity("user_deleted", { schema: "dbo" })
 export class UserDeleted {
@@ -14,7 +14,7 @@ export class UserDeleted {
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @OneToOne(() => Users)
+  @OneToOne(() => User)
   @JoinColumn()
-  user: Users
+  user: User
 }

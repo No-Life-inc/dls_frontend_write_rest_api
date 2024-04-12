@@ -7,14 +7,14 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { CommentReaction } from "./CommentReaction";
-import { Users } from "./User";
-import { Stories } from "./Story";
+import { User } from "./User";
+import { Story } from "./Story";
 import { ReactionType } from "./ReactionType";
 import { StoryReaction } from "./StoryReaction";
 
 @Index("PK__reaction__36A9D2980E42B100", ["reactionId"], { unique: true })
 @Entity("reactions", { schema: "dbo" })
-export class Reactions {
+export class Reaction {
   @PrimaryGeneratedColumn({ type: "int", name: "reaction_id" })
   reactionId: number;
 
@@ -24,13 +24,13 @@ export class Reactions {
   )
   commentReactions: CommentReaction[];
 
-  @ManyToOne(() => Users, (users) => users.reactions)
+  @ManyToOne(() => User, (users) => users.reactions)
   @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
-  user: Users;
+  user: User;
 
-  @ManyToOne(() => Stories, (stories) => stories.reactions)
+  @ManyToOne(() => Story, (stories) => stories.reactions)
   @JoinColumn([{ name: "story_id", referencedColumnName: "storyId" }])
-  story: Stories;
+  story: Story;
 
   @ManyToOne(() => ReactionType, (reactionType) => reactionType.reactions)
   @JoinColumn([
