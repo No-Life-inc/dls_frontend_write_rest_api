@@ -1,6 +1,7 @@
 import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CommentDTO } from './CommentDTO';
+import { CommentInfo } from '../entities/CommentInfo';
 
 export class CommentInfoDTO {
   @IsOptional()
@@ -18,10 +19,11 @@ export class CommentInfoDTO {
   @Type(() => CommentDTO)
   comment: CommentDTO;
 
-  constructor(commentInfoId: number, bodyText: string, createdAt: Date, comment: CommentDTO) {
-    this.commentInfoId = commentInfoId;
-    this.bodyText = bodyText;
-    this.createdAt = createdAt;
-    this.comment = comment;
+  constructor(commentInfo: CommentInfo) {
+    this.commentInfoId = commentInfo.commentInfoId;
+    this.bodyText = commentInfo.bodyText;
+    this.createdAt = commentInfo.createdAt;
+    this.comment = new CommentDTO(commentInfo.comment);
   }
+
 }

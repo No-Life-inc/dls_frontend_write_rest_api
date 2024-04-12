@@ -1,6 +1,7 @@
 import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UserDTO } from './UserDTO';
+import { UserInfo } from '../entities/UserInfo';
 
 export class UserInfoDTO {
   @IsOptional()
@@ -29,13 +30,13 @@ export class UserInfoDTO {
   @Type(() => UserDTO)
   user: UserDTO;
 
-  constructor(userInfoId: number, firstName: string, lastName: string, imgUrl: string | null, email: string, createdAt: Date, user: UserDTO) {
-    this.userInfoId = userInfoId;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.imgUrl = imgUrl;
-    this.email = email;
-    this.createdAt = createdAt;
-    this.user = user;
+  constructor(userInfo: UserInfo) {
+    this.userInfoId = userInfo.userInfoId;
+    this.firstName = userInfo.firstName;
+    this.lastName = userInfo.lastName;
+    this.imgUrl = userInfo.imgUrl;
+    this.email = userInfo.email;
+    this.createdAt = userInfo.createdAt;
+    this.user = new UserDTO(userInfo.user);
   }
 }

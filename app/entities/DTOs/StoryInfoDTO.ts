@@ -1,4 +1,5 @@
 import { IsString, IsOptional, IsDate, IsInt } from 'class-validator';
+import { StoryInfo } from '../entities/StoryInfo';
 
 export class StoryInfoDTO {
   @IsString()
@@ -20,11 +21,10 @@ export class StoryInfoDTO {
   @IsInt()
   storyId: number;
 
-  constructor(title: string, bodyText: string, imgUrl: string | null, createdAt: Date, storyId: number) {
-    this.title = title;
-    this.bodyText = bodyText;
-    this.imgUrl = imgUrl;
-    this.createdAt = createdAt;
-    this.storyId = storyId;
-  }
+  constructor(storyInfo: StoryInfo) {
+    this.title = storyInfo.title;
+    this.bodyText = storyInfo.bodyText;
+    this.imgUrl = storyInfo.imgUrl;
+    this.createdAt = storyInfo.createdAt;
+    this.storyId = storyInfo.story.storyId;} 
 }

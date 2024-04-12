@@ -5,6 +5,8 @@ import { CommentDTO as CommentDTO } from './CommentDTO';
 import { FriendDTO as FriendDTO } from './FriendDTO';
 import { ReactionDTO as ReactionDTO } from './ReactionDTO';
 import { StoryDTO } from './StoryDTO';
+import { User } from '../entities/User';
+
 
 export class UserDTO {
   @IsOptional()
@@ -45,16 +47,16 @@ export class UserDTO {
   @Type(() => FriendDTO)
   friends: FriendDTO[];
 
-  constructor(userId: number, userGuid: string, createdAt: Date, comments: CommentDTO[], reactions: ReactionDTO[], stories: StoryDTO[], blockedBy: BlockedDTO[], blocked: BlockedDTO[], user: FriendDTO[], friends: FriendDTO[]) {
-    this.userId = userId;
-    this.userGuid = userGuid;
-    this.createdAt = createdAt;
-    this.comments = comments;
-    this.reactions = reactions;
-    this.stories = stories;
-    this.blockedBy = blockedBy;
-    this.blocked = blocked;
-    this.user = user;
-    this.friends = friends;
+  constructor(user: User) {
+    this.userId = user.userId;
+    this.userGuid = user.userGuid;
+    this.createdAt = user.createdAt;
+    this.comments = user.comments.map((comment) => new CommentDTO(comment));
+    this.reactions = user.reactions.map((reaction) => new ReactionDTO(reaction));
+    this.stories = user.stories.map((story) => new StoryDTO(story));
+    this.blockedBy = user.blockedBy.map((blocked) => new BlockedDTO(blocked));
+    this.blocked = user.blocked.map((blocked) => new BlockedDTO(blocked));
+    this.user = user.user.map((friend) => new FriendDTO(friend));
+    this.friends = user.friends.map((friend) => new FriendDTO(friend));
   }
 }

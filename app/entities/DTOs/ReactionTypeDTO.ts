@@ -1,4 +1,5 @@
 import { IsString, IsOptional } from 'class-validator';
+import { ReactionType } from '../entities/ReactionType';
 
 export class ReactionTypeDTO {
   @IsString()
@@ -9,8 +10,8 @@ export class ReactionTypeDTO {
   @IsOptional()
   reactionTypeImg: string;
 
-  constructor(reactionTypeName: string, reactionTypeImg: string) {
-    this.reactionTypeName = reactionTypeName;
-    this.reactionTypeImg = reactionTypeImg;
+  constructor(reactionType: ReactionType) {
+    this.reactionTypeName = reactionType.reactionTypeName;
+    this.reactionTypeImg = reactionType.reactionTypeImg;
   }
 }

@@ -2,6 +2,7 @@ import { IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CommentDTO } from './CommentDTO';
 import { ReactionDTO } from './ReactionDTO';
+import { CommentReaction } from '../entities/CommentReaction';
 
 export class CommentReactionDTO {
   @IsOptional()
@@ -15,9 +16,9 @@ export class CommentReactionDTO {
   @Type(() => ReactionDTO)
   reaction: ReactionDTO;
 
-  constructor(commentReactionId: number, comment: CommentDTO, reaction: ReactionDTO) {
-    this.commentReactionId = commentReactionId;
-    this.comment = comment;
-    this.reaction = reaction;
+  constructor(commentReaction: CommentReaction) {
+    this.commentReactionId = commentReaction.commentReactionId;
+    this.comment = new CommentDTO(commentReaction.comment);
+    this.reaction = new ReactionDTO(commentReaction.reaction);
   }
 }

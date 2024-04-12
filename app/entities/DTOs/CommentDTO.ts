@@ -4,6 +4,7 @@ import { CommentInfoDTO } from './CommentInfoDTO';
 import { CommentReactionDTO } from './CommentReactionDTO';
 import { UserDTO } from './UserDTO';
 import { StoryDTO } from './StoryDTO';
+import { Comment } from '../entities/Comment';
 
 export class CommentDTO {
   @IsOptional()
@@ -33,13 +34,13 @@ export class CommentDTO {
   @Type(() => StoryDTO)
   story: StoryDTO;
 
-  constructor(commentId: number, commentGuid: string, createdAt: Date, commentInfos: CommentInfoDTO[], commentReactions: CommentReactionDTO[], user: UserDTO, story: StoryDTO) {
-    this.commentId = commentId;
-    this.commentGuid = commentGuid;
-    this.createdAt = createdAt;
-    this.commentInfos = commentInfos;
-    this.commentReactions = commentReactions;
-    this.user = user;
-    this.story = story;
+  constructor(comment: Comment) {
+    this.commentId = comment.commentId;
+    this.commentGuid = comment.commentGuid;
+    this.createdAt = comment.createdAt;
+    this.commentInfos = comment.commentInfos.map((commentInfo) => new CommentInfoDTO(commentInfo));
+    this.commentReactions = comment.commentReactions.map((commentReaction) => new CommentReactionDTO(commentReaction));
+    this.user = new UserDTO(comment.user);
+    this.story = new StoryDTO(comment.story);
   }
 }

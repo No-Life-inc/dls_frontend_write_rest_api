@@ -1,4 +1,5 @@
 import { IsInt, IsOptional } from 'class-validator';
+import { Reaction } from '../entities/Reaction';
 
 export class ReactionDTO {
   @IsInt()
@@ -13,9 +14,9 @@ export class ReactionDTO {
   @IsOptional()
   reactionTypeId: number;
 
-  constructor(userId: number, storyId: number, reactionTypeId: number) {
-    this.userId = userId;
-    this.storyId = storyId;
-    this.reactionTypeId = reactionTypeId;
+  constructor(reaction: Reaction) {
+    this.userId = reaction.user.userId;
+    this.storyId = reaction.story.storyId;
+    this.reactionTypeId = reaction.reactionType.reactionTypeId;
   }
 }

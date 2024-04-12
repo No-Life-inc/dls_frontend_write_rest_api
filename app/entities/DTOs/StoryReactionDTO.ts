@@ -1,4 +1,5 @@
 import { IsInt } from 'class-validator';
+import { StoryReaction } from '../entities/StoryReaction';
 
 export class StoryReactionDTO {
   @IsInt()
@@ -7,8 +8,8 @@ export class StoryReactionDTO {
   @IsInt()
   reactionId: number;
 
-  constructor(storyId: number, reactionId: number) {
-    this.storyId = storyId;
-    this.reactionId = reactionId;
+  constructor(storyReaction: StoryReaction) {
+    this.storyId = storyReaction.story.storyId;
+    this.reactionId = storyReaction.reaction.reactionId;
   }
 }
