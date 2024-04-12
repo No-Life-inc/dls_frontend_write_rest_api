@@ -1,9 +1,9 @@
 import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { BlockedDTO } from './BlockedDTO';
-import { CommentDTO as CommentDTO } from './CommentDTO';
-import { FriendDTO as FriendDTO } from './FriendDTO';
-import { ReactionDTO as ReactionDTO } from './ReactionDTO';
+import { CommentDTO } from './CommentDTO';
+import { FriendDTO } from './FriendDTO';
+import { ReactionDTO  } from './ReactionDTO';
 import { StoryDTO } from './StoryDTO';
 import { User } from '../entities/User';
 

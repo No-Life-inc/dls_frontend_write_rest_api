@@ -1,7 +1,7 @@
-import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { UserDTO } from './UserDTO';
-import { UserInfo } from '../entities/UserInfo';
+import { IsOptional, IsString, IsDate, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { UserDTO } from "./UserDTO";
+import { UserInfo } from "../entities/UserInfo";
 
 export class UserInfoDTO {
   @IsOptional()

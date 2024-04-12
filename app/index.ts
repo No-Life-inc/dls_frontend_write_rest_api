@@ -41,6 +41,7 @@ queueManager.setupQueue('update_story_info').then((ch) => {
 // TODO: ormconfig.json has to use the environment variables
  createConnection().then(async connection => {
   // Your previous setup code here
+  
   RegisterRoutes(app);
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   app.listen(3000, () => {

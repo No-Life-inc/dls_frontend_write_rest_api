@@ -8,6 +8,7 @@ import { Body, Post, Route, Path, Put } from 'tsoa';
 import { HttpError } from 'routing-controllers';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
 import { StoryDTO } from '../entities/DTOs/StoryDTO';
+import { CreateStoryDTO } from '../entities/interfaces/CreateStoryDTO';
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: StoryDTO): Promise<StoryDTO> {
+  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<StoryDTO> {
     console.log('Request body:', requestBody); // Log the request body
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }, relations: ['userInfos']});
@@ -26,9 +27,20 @@ export class StoriesController {
     }
 
     const storyRepository = getRepository(Story);
-    let newStory = new Story(requestBody);
+    let newStory = new Story();
+    //insert the data from the request body into the newStory object
+    
+    newStory.storyGuid = requestBody.storyGuid;
+    newStory.createdAt = new Date(requestBody.createdAt);
     newStory.user = user;
-  
+    let newStoryInfo = new StoryInfo();
+    newStoryInfo.title = requestBody.storyInfo.title;
+    newStoryInfo.bodyText = requestBody.storyInfo.bodyText;
+    newStoryInfo.imgUrl = requestBody.storyInfo.imgUrl;
+    newStoryInfo.createdAt = new Date(requestBody.createdAt);
+    newStoryInfo.story = newStory; // Set the story
+    newStory.storyInfos = [newStoryInfo];
+
     try {
       await storyRepository.save(newStory);
     } catch (error) {

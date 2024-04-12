@@ -8,7 +8,7 @@
     "password": "YourStrongPassword123",
     "database": "mssqlWrite",
     "synchronize": false,
-    "entities": ["app/entities/dtos/*.ts"],
+    "entities": ["app/entities/entities/*.ts"],
     "options": {
       "encrypt": true,
       "trustServerCertificate": true

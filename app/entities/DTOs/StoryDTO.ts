@@ -1,11 +1,11 @@
-import { IsString, IsDate, IsOptional, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { CommentDTO as CommentDTO } from './CommentDTO';
-import { ReactionDTO as ReactionDTO } from './ReactionDTO';
-import { UserDTO as UserDTO } from './UserDTO';
-import { StoryInfoDTO } from './StoryInfoDTO';
-import { StoryReactionDTO } from './StoryReactionDTO';
-import { Story } from '../entities/Story';
+import { IsString, IsDate, IsOptional, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { CommentDTO as CommentDTO } from "./CommentDTO";
+import { ReactionDTO as ReactionDTO } from "./ReactionDTO";
+import { UserDTO } from "./UserDTO";
+import { StoryInfoDTO } from "./StoryInfoDTO";
+import { StoryReactionDTO } from "./StoryReactionDTO";
+import { Story } from "../entities/Story";
 
 export class StoryDTO {
   @IsOptional()
@@ -42,10 +42,18 @@ export class StoryDTO {
     this.storyId = story.storyId;
     this.storyGuid = story.storyGuid;
     this.createdAt = story.createdAt;
-    this.comments = story.comments.map((comment) => new CommentDTO(comment));
-    this.reactions = story.reactions.map((reaction) => new ReactionDTO(reaction));
+    if(story.comments)
+      this.comments = story.comments.map((comment) => new CommentDTO(comment));
+    
+    this.reactions = story.reactions.map(
+      (reaction) => new ReactionDTO(reaction)
+    );
     this.user = new UserDTO(story.user);
-    this.storyInfos = story.storyInfos.map((storyInfo) => new StoryInfoDTO(storyInfo));
-    this.storyReactions = story.storyReactions.map((storyReaction) => new StoryReactionDTO(storyReaction));
+    this.storyInfos = story.storyInfos.map(
+      (storyInfo) => new StoryInfoDTO(storyInfo)
+    );
+    this.storyReactions = story.storyReactions.map(
+      (storyReaction) => new StoryReactionDTO(storyReaction)
+    );
   }
 }

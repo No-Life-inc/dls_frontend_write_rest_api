@@ -1,7 +1,7 @@
-import { IsOptional, IsDate, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { UserDTO } from './UserDTO';
-import { Blocked } from '../entities/Blocked';
+import { IsOptional, IsDate, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { UserDTO } from "./UserDTO";
+import { Blocked } from "../entities/Blocked";
 
 export class BlockedDTO {
   @IsOptional()

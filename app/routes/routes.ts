@@ -11,6 +11,137 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "CommentDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "commentId": {"dataType":"double","required":true},
+            "commentGuid": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "commentInfos": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentInfoDTO"},"required":true},
+            "commentReactions": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentReactionDTO"},"required":true},
+            "user": {"ref":"UserDTO","required":true},
+            "story": {"ref":"StoryDTO","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CommentInfoDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "commentInfoId": {"dataType":"double","required":true},
+            "bodyText": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "comment": {"ref":"CommentDTO","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReactionDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"double","required":true},
+            "storyId": {"dataType":"double","required":true},
+            "reactionTypeId": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CommentReactionDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "commentReactionId": {"dataType":"double","required":true},
+            "comment": {"ref":"CommentDTO","required":true},
+            "reaction": {"ref":"ReactionDTO","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StoryDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "storyId": {"dataType":"double","required":true},
+            "storyGuid": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "comments": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentDTO"},"required":true},
+            "reactions": {"dataType":"array","array":{"dataType":"refObject","ref":"ReactionDTO"},"required":true},
+            "user": {"ref":"UserDTO","required":true},
+            "storyInfos": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryInfoDTO"},"required":true},
+            "storyReactions": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryReactionDTO"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"double","required":true},
+            "userGuid": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "comments": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentDTO"},"required":true},
+            "reactions": {"dataType":"array","array":{"dataType":"refObject","ref":"ReactionDTO"},"required":true},
+            "stories": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryDTO"},"required":true},
+            "blockedBy": {"dataType":"array","array":{"dataType":"refObject","ref":"BlockedDTO"},"required":true},
+            "blocked": {"dataType":"array","array":{"dataType":"refObject","ref":"BlockedDTO"},"required":true},
+            "user": {"dataType":"array","array":{"dataType":"refObject","ref":"FriendDTO"},"required":true},
+            "friends": {"dataType":"array","array":{"dataType":"refObject","ref":"FriendDTO"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "BlockedDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "blockedId": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "users": {"dataType":"array","array":{"dataType":"refObject","ref":"UserDTO"},"required":true},
+            "blocked": {"dataType":"array","array":{"dataType":"refObject","ref":"UserDTO"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FriendDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "friendship_id": {"dataType":"double","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "users": {"dataType":"array","array":{"dataType":"refObject","ref":"UserDTO"},"required":true},
+            "friends": {"dataType":"array","array":{"dataType":"refObject","ref":"UserDTO"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StoryInfoDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string","required":true},
+            "bodyText": {"dataType":"string","required":true},
+            "imgUrl": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "storyId": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StoryReactionDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "storyId": {"dataType":"double","required":true},
+            "reactionId": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateStoryDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "storyGuid": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"string","required":true},
+            "user": {"dataType":"nestedObjectLiteral","nestedProperties":{"userGuid":{"dataType":"string","required":true}},"required":true},
+            "storyInfo": {"dataType":"nestedObjectLiteral","nestedProperties":{"imgUrl":{"dataType":"string","required":true},"bodyText":{"dataType":"string","required":true},"title":{"dataType":"string","required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Comment": {
         "dataType": "refObject",
         "properties": {
@@ -158,35 +289,6 @@ const models: TsoaRoute.Models = {
             "imgUrl": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "story": {"ref":"Story","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateStoryDTOUser": {
-        "dataType": "refObject",
-        "properties": {
-            "userGuid": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateStoryDTOStoryInfo": {
-        "dataType": "refObject",
-        "properties": {
-            "title": {"dataType":"string","required":true},
-            "bodyText": {"dataType":"string","required":true},
-            "imgUrl": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateStoryDTO": {
-        "dataType": "refObject",
-        "properties": {
-            "storyGuid": {"dataType":"string","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "user": {"ref":"CreateStoryDTOUser","required":true},
-            "storyInfo": {"ref":"CreateStoryDTOStoryInfo","required":true},
         },
         "additionalProperties": false,
     },

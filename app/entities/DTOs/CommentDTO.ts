@@ -1,10 +1,10 @@
-import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { CommentInfoDTO } from './CommentInfoDTO';
-import { CommentReactionDTO } from './CommentReactionDTO';
-import { UserDTO } from './UserDTO';
-import { StoryDTO } from './StoryDTO';
-import { Comment } from '../entities/Comment';
+import { IsOptional, IsString, IsDate, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
+import { CommentInfoDTO } from "./CommentInfoDTO";
+import { CommentReactionDTO } from "./CommentReactionDTO";
+import { UserDTO } from "./UserDTO";
+import { StoryDTO } from "./StoryDTO";
+import { Comment } from "../entities/Comment";
 
 export class CommentDTO {
   @IsOptional()
@@ -38,8 +38,12 @@ export class CommentDTO {
     this.commentId = comment.commentId;
     this.commentGuid = comment.commentGuid;
     this.createdAt = comment.createdAt;
-    this.commentInfos = comment.commentInfos.map((commentInfo) => new CommentInfoDTO(commentInfo));
-    this.commentReactions = comment.commentReactions.map((commentReaction) => new CommentReactionDTO(commentReaction));
+    this.commentInfos = comment.commentInfos.map(
+      (commentInfo) => new CommentInfoDTO(commentInfo)
+    );
+    this.commentReactions = comment.commentReactions.map(
+      (commentReaction) => new CommentReactionDTO(commentReaction)
+    );
     this.user = new UserDTO(comment.user);
     this.story = new StoryDTO(comment.story);
   }

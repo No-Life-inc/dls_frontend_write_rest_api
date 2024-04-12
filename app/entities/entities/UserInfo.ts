@@ -30,6 +30,7 @@ export class UserInfo {
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @ManyToOne(() => User, (users) => users.userInfos)
-  user: User
+  @ManyToOne(() => User, user => user.userInfos)
+  @JoinColumn({ name: "user_id" }) // This should match the column name in your database
+  user: User;
 }
