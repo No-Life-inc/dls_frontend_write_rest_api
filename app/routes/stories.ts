@@ -18,7 +18,7 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<Story> {
+  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<StoryDTO> {
     console.log('Request body:', requestBody); // Log the request body
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }, relations: ['userInfos']});
