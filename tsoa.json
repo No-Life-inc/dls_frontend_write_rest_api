@@ -11,6 +11,6 @@
     },
     "basePath": "v1",
   "models": {
-    "basePath": ["./app/entities/entities", "./app/entities/dtos"]
+    "basePath": ["./app/entities/dtos"]
   }
   }

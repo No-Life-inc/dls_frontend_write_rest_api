@@ -8,7 +8,7 @@ import {
 import { User } from "./User";
 
 
-@Index("PK__friends__3FA1E15546C7C974", ["friendshipId"], { unique: true })
+@Index("PK__friends__3FA1E15546C7C974", ["friendship_id"], { unique: true })
 @Entity("friends", { schema: "dbo" })
 export class Friend {
   @PrimaryGeneratedColumn({ type: "int", name: "friendship_id" })

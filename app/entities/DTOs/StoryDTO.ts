@@ -5,6 +5,7 @@ import { ReactionDTO as ReactionDTO } from './ReactionDTO';
 import { UserDTO as UserDTO } from './UserDTO';
 import { StoryInfoDTO } from './StoryInfoDTO';
 import { StoryReactionDTO } from './StoryReactionDTO';
+import { Story } from '../entities/Story';
 
 export class StoryDTO {
   @IsOptional()
@@ -46,5 +47,16 @@ export class StoryDTO {
     this.reactions = reactions;
     this.storyInfos = storyInfos;
     this.storyReactions = storyReactions;
+  }
+
+  constructor(story: Story) {
+    this.storyId = story.storyId;
+    this.storyGuid = story.storyGuid;
+    this.createdAt = story.createdAt;
+    this.user = new UserDTO(story.user);
+    this.comments = story.comments.map((comment) => new CommentDTO(comment));
+    this.reactions = story.reactions.map((reaction) => new ReactionDTO(reaction));
+    this.storyInfos = story.storyInfos.map((storyInfo) => new StoryInfoDTO(storyInfo));
+    this.storyReactions = story.storyReactions.map((storyReaction) => new StoryReactionDTO(storyReaction));
   }
 }

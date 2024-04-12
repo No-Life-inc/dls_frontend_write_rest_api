@@ -1,4 +1,4 @@
-import { Stories } from "../entities/entities/Stories";
+import { Story } from "../entities/entities/Story";
 import { StoryInfo } from "../entities/entities/StoryInfo";
 import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue

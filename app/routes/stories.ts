@@ -9,6 +9,7 @@ import { HttpError } from 'routing-controllers';
 import { CreateStoryDTO } from '../entities/DTOs/createStoryDTO';
 import { getConnection } from 'typeorm';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
+import { StoryDTO } from '../entities/DTOs/StoryDTO';
 
 const router = express.Router();
 
@@ -37,7 +38,7 @@ export class StoriesController {
     }
   
     publishNewStory(newStory);
-    return newStory;
+    return new StoryDTO(newStory);
   }
 
   @Put('{storyGuid}')
