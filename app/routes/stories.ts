@@ -1,7 +1,7 @@
 import express from 'express';
-import { Stories } from '../entities/entities/Stories';
+import { Story } from '../entities/entities/Story';
 import { StoryInfo } from '../entities/entities/StoryInfo';
-import { Users } from '../entities/entities/Users';
+import { User } from '../entities/entities/User';
 import { getRepository } from 'typeorm';
 import publishNewStory from '../rabbitMQ/publishNewStory';
 import { Body, Post, Route, Path, Put } from 'tsoa';
@@ -9,6 +9,7 @@ import { HttpError } from 'routing-controllers';
 import { CreateStoryDTO } from '../entities/DTOs/createStoryDTO';
 import { getConnection } from 'typeorm';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
+import { StoryDTO } from '../entities/DTOs/StoryDTO';
 
 const router = express.Router();
 
@@ -17,17 +18,17 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<Stories> {
+  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<Story> {
     console.log('Request body:', requestBody); // Log the request body
-    const userRepository = getRepository(Users);
+    const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }, relations: ['userInfos']});
 
     if (!user) {
       throw new HttpError(400, 'User not found');
     }
 
-    const storyRepository = getRepository(Stories);
-    let newStory = new Stories(requestBody);
+    const storyRepository = getRepository(Story);
+    let newStory = new Story(requestBody);
     newStory.user = user;
   
     try {
@@ -37,12 +38,12 @@ export class StoriesController {
     }
   
     publishNewStory(newStory);
-    return newStory;
+    return new StoryDTO(newStory);
   }
 
   @Put('{storyGuid}')
 public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfos: Partial<StoryInfo>[] }): Promise<any> {
-  const storyRepository = getRepository(Stories);
+  const storyRepository = getRepository(Story);
   const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }, relations: ['storyInfos', 'user', 'user.userInfos']});
 
   if (!story) {

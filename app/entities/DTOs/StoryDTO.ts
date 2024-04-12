@@ -48,4 +48,15 @@ export class StoryDTO {
     this.storyInfos = story.storyInfos.map((storyInfo) => new StoryInfoDTO(storyInfo));
     this.storyReactions = story.storyReactions.map((storyReaction) => new StoryReactionDTO(storyReaction));
   }
+
+  constructor(story: Story) {
+    this.storyId = story.storyId;
+    this.storyGuid = story.storyGuid;
+    this.createdAt = story.createdAt;
+    this.user = new UserDTO(story.user);
+    this.comments = story.comments.map((comment) => new CommentDTO(comment));
+    this.reactions = story.reactions.map((reaction) => new ReactionDTO(reaction));
+    this.storyInfos = story.storyInfos.map((storyInfo) => new StoryInfoDTO(storyInfo));
+    this.storyReactions = story.storyReactions.map((storyReaction) => new StoryReactionDTO(storyReaction));
+  }
 }

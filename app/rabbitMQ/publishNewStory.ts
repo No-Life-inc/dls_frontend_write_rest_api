@@ -1,4 +1,4 @@
-import { Stories } from "../entities/entities/Stories";
+import { Story } from "../entities/entities/Story";
 import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
@@ -9,7 +9,7 @@ import { QueueManager } from "./setupRabbit"; // Import setupQueue
  * @param story - The story to publish
  * @returns void
  */
-export function publishNewStory(story: Stories) {
+export function publishNewStory(story: Story) {
   // Get the QueueManager instance and set up the queue
   const queueManager = QueueManager.getInstance();
 

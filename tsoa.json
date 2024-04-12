@@ -8,5 +8,9 @@
     },
     "routes": {
         "routesDir": "./app/routes"
-    }
+    },
+    "basePath": "v1",
+  "models": {
+    "basePath": ["./app/entities/dtos"]
+  }
   }
