@@ -2,8 +2,9 @@ import {
   Column,
   Entity,
   Index,
-  OneToMany,
   ManyToMany,
+  OneToMany,
+  JoinColumn,
   JoinTable,
   BaseEntity,
   PrimaryGeneratedColumn,
@@ -13,6 +14,7 @@ import { Comment } from "./Comment";
 import { Friend as Friend } from "./Friend";
 import { Reaction } from "./Reaction";
 import { Story } from "./Story";
+import { UserInfo } from "./UserInfo";
 
 @Index("PK__users__B9BE370FB856433B", ["userId"], { unique: true })
 @Entity("users", { schema: "dbo" })
@@ -50,4 +52,7 @@ export class User  extends BaseEntity {
   @ManyToMany(() => Friend, (friends) => friends.users)
   @JoinTable()
   friends: Friend[]
+
+  @OneToMany(() => UserInfo, (userInfo) => userInfo.user)
+  userInfos: UserInfo[]
 }

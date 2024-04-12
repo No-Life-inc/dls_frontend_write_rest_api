@@ -3,6 +3,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -29,7 +30,6 @@ export class UserInfo {
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @OneToOne(() => User)
-  @JoinColumn()
+  @ManyToOne(() => User, (users) => users.userInfos)
   user: User
 }
