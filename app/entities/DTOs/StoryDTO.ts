@@ -1,12 +1,12 @@
 import { IsString, IsDate, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CommentsDTO } from './CommentDTO';
-import { ReactionsDTO } from './ReactionDTO';
-import { UsersDTO } from './UserDTO';
+import { CommentDTO as CommentDTO } from './CommentDTO';
+import { ReactionDTO as ReactionDTO } from './ReactionDTO';
+import { UserDTO as UserDTO } from './UserDTO';
 import { StoryInfoDTO } from './StoryInfoDTO';
 import { StoryReactionDTO } from './StoryReactionDTO';
 
-export class StoriesDTO {
+export class StoryDTO {
   @IsOptional()
   storyId: number;
 
@@ -18,16 +18,16 @@ export class StoriesDTO {
   createdAt: Date;
 
   @ValidateNested({ each: true })
-  @Type(() => CommentsDTO)
-  comments: CommentsDTO[];
+  @Type(() => CommentDTO)
+  comments: CommentDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => ReactionsDTO)
-  reactions: ReactionsDTO[];
+  @Type(() => ReactionDTO)
+  reactions: ReactionDTO[];
 
   @ValidateNested()
-  @Type(() => UsersDTO)
-  user: UsersDTO;
+  @Type(() => UserDTO)
+  user: UserDTO;
 
   @ValidateNested({ each: true })
   @Type(() => StoryInfoDTO)
@@ -37,7 +37,7 @@ export class StoriesDTO {
   @Type(() => StoryReactionDTO)
   storyReactions: StoryReactionDTO[];
 
-  constructor(storyId: number, storyGuid: string, createdAt: Date, user: UsersDTO, comments: CommentsDTO[], reactions: ReactionsDTO[], storyInfos: StoryInfoDTO[], storyReactions: StoryReactionDTO[]) {
+  constructor(storyId: number, storyGuid: string, createdAt: Date, user: UserDTO, comments: CommentDTO[], reactions: ReactionDTO[], storyInfos: StoryInfoDTO[], storyReactions: StoryReactionDTO[]) {
     this.storyId = storyId;
     this.storyGuid = storyGuid;
     this.createdAt = createdAt;

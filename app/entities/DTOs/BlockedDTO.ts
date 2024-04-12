@@ -1,6 +1,6 @@
 import { IsOptional, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UsersDTO } from './UserDTO';
+import { UserDTO } from './UserDTO';
 
 export class BlockedDTO {
   @IsOptional()
@@ -10,14 +10,14 @@ export class BlockedDTO {
   createdAt: Date;
 
   @ValidateNested({ each: true })
-  @Type(() => UsersDTO)
-  users: UsersDTO[];
+  @Type(() => UserDTO)
+  users: UserDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => UsersDTO)
-  blocked: UsersDTO[];
+  @Type(() => UserDTO)
+  blocked: UserDTO[];
 
-  constructor(blockedId: number, createdAt: Date, users: UsersDTO[], blocked: UsersDTO[]) {
+  constructor(blockedId: number, createdAt: Date, users: UserDTO[], blocked: UserDTO[]) {
     this.blockedId = blockedId;
     this.createdAt = createdAt;
     this.users = users;

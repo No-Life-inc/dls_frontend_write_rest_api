@@ -1,6 +1,6 @@
 import { IsOptional, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UsersDTO } from './UserDTO';
+import { UserDTO as UserDTO } from './UserDTO';
 
 export class UserDeletedDTO {
   @IsOptional()
@@ -11,10 +11,10 @@ export class UserDeletedDTO {
   createdAt: Date;
 
   @ValidateNested()
-  @Type(() => UsersDTO)
-  user: UsersDTO;
+  @Type(() => UserDTO)
+  user: UserDTO;
 
-  constructor(userId: number, createdAt: Date, user: UsersDTO) {
+  constructor(userId: number, createdAt: Date, user: UserDTO) {
     this.userId = userId;
     this.createdAt = createdAt;
     this.user = user;

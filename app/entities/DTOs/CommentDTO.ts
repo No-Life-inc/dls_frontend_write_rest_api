@@ -2,10 +2,10 @@ import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CommentInfoDTO } from './CommentInfoDTO';
 import { CommentReactionDTO } from './CommentReactionDTO';
-import { UsersDTO } from './UserDTO';
-import { StoriesDTO } from './StoryDTO';
+import { UserDTO } from './UserDTO';
+import { StoryDTO } from './StoryDTO';
 
-export class CommentsDTO {
+export class CommentDTO {
   @IsOptional()
   commentId: number;
 
@@ -26,14 +26,14 @@ export class CommentsDTO {
   commentReactions: CommentReactionDTO[];
 
   @ValidateNested()
-  @Type(() => UsersDTO)
-  user: UsersDTO;
+  @Type(() => UserDTO)
+  user: UserDTO;
 
   @ValidateNested()
-  @Type(() => StoriesDTO)
-  story: StoriesDTO;
+  @Type(() => StoryDTO)
+  story: StoryDTO;
 
-  constructor(commentId: number, commentGuid: string, createdAt: Date, commentInfos: CommentInfoDTO[], commentReactions: CommentReactionDTO[], user: UsersDTO, story: StoriesDTO) {
+  constructor(commentId: number, commentGuid: string, createdAt: Date, commentInfos: CommentInfoDTO[], commentReactions: CommentReactionDTO[], user: UserDTO, story: StoryDTO) {
     this.commentId = commentId;
     this.commentGuid = commentGuid;
     this.createdAt = createdAt;

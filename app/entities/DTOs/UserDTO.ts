@@ -1,12 +1,12 @@
 import { IsOptional, IsString, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { BlockedDTO } from './BlockedDTO';
-import { CommentsDTO } from './CommentDTO';
-import { FriendsDTO } from './FriendDTO';
-import { ReactionsDTO } from './ReactionDTO';
-import { StoriesDTO } from './StoryDTO';
+import { CommentDTO as CommentDTO } from './CommentDTO';
+import { FriendDTO as FriendDTO } from './FriendDTO';
+import { ReactionDTO as ReactionDTO } from './ReactionDTO';
+import { StoryDTO } from './StoryDTO';
 
-export class UsersDTO {
+export class UserDTO {
   @IsOptional()
   userId: number;
 
@@ -18,16 +18,16 @@ export class UsersDTO {
   createdAt: Date;
 
   @ValidateNested({ each: true })
-  @Type(() => CommentsDTO)
-  comments: CommentsDTO[];
+  @Type(() => CommentDTO)
+  comments: CommentDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => ReactionsDTO)
-  reactions: ReactionsDTO[];
+  @Type(() => ReactionDTO)
+  reactions: ReactionDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => StoriesDTO)
-  stories: StoriesDTO[];
+  @Type(() => StoryDTO)
+  stories: StoryDTO[];
 
   @ValidateNested({ each: true })
   @Type(() => BlockedDTO)
@@ -38,14 +38,14 @@ export class UsersDTO {
   blocked: BlockedDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => FriendsDTO)
-  user: FriendsDTO[];
+  @Type(() => FriendDTO)
+  user: FriendDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => FriendsDTO)
-  friends: FriendsDTO[];
+  @Type(() => FriendDTO)
+  friends: FriendDTO[];
 
-  constructor(userId: number, userGuid: string, createdAt: Date, comments: CommentsDTO[], reactions: ReactionsDTO[], stories: StoriesDTO[], blockedBy: BlockedDTO[], blocked: BlockedDTO[], user: FriendsDTO[], friends: FriendsDTO[]) {
+  constructor(userId: number, userGuid: string, createdAt: Date, comments: CommentDTO[], reactions: ReactionDTO[], stories: StoryDTO[], blockedBy: BlockedDTO[], blocked: BlockedDTO[], user: FriendDTO[], friends: FriendDTO[]) {
     this.userId = userId;
     this.userGuid = userGuid;
     this.createdAt = createdAt;

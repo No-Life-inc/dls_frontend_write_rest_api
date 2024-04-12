@@ -1,8 +1,8 @@
 import { IsOptional, IsDate, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UsersDTO } from './UserDTO';
+import { UserDTO } from './UserDTO';
 
-export class FriendsDTO {
+export class FriendDTO {
   @IsOptional()
   friendship_id: number;
 
@@ -10,14 +10,14 @@ export class FriendsDTO {
   createdAt: Date;
 
   @ValidateNested({ each: true })
-  @Type(() => UsersDTO)
-  users: UsersDTO[];
+  @Type(() => UserDTO)
+  users: UserDTO[];
 
   @ValidateNested({ each: true })
-  @Type(() => UsersDTO)
-  friends: UsersDTO[];
+  @Type(() => UserDTO)
+  friends: UserDTO[];
 
-  constructor(friendship_id: number, createdAt: Date, users: UsersDTO[], friends: UsersDTO[]) {
+  constructor(friendship_id: number, createdAt: Date, users: UserDTO[], friends: UserDTO[]) {
     this.friendship_id = friendship_id;
     this.createdAt = createdAt;
     this.users = users;
