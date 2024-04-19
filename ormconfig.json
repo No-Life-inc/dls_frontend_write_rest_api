@@ -1,0 +1,17 @@
+[
+  {
+    "name": "default",
+    "type": "mssql",
+    "host": "localhost",
+    "port": 1433,
+    "username": "SA",
+    "password": "YourStrongPassword123",
+    "database": "mssqlWrite",
+    "synchronize": false,
+    "entities": ["app/entities/entities/*.ts"],
+    "options": {
+      "encrypt": true,
+      "trustServerCertificate": true
+    }
+  }
+]

@@ -1,9 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import { connectToDb } from './db/dbConnect';
-import { setupRabbitMQ, publishToQueue } from './rabbitMQ/setupRabbit';
-import storiesRouter from './routes/stories';
+import { QueueManager } from './rabbitMQ/setupRabbit';
+import { RegisterRoutes } from './routes/routes';
 import { config } from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from "../dist/swagger.json";
+import connectDB from './config/ormconfig';
+import { createConnection } from 'typeorm';
+
 
 /***
  * Load environment variables from a .env file into process.env
@@ -12,9 +17,7 @@ config();
 
 const PORT = process.env.PORT || 3000;
 
-/***
- * Create an instance of express
- */
+
 const app = express();
 app.use(cors({ origin: 'http://localhost:8080' }));
 
@@ -24,20 +27,36 @@ app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(express.json());
 
 
-setupRabbitMQ().then(() => {
+// Get the QueueManager instance and set up the queue
+const queueManager = QueueManager.getInstance();
+queueManager.setupQueue('new_stories').then((ch) => {
   console.log('RabbitMQ setup completed');
 }).catch(err => {
   console.error('Failed to setup RabbitMQ', err);
 });
 
-connectToDb().then(pool => {
-  // Attach the pool object to app.locals
-  app.locals.pool = pool;
-
-  // Import your routes here
-  app.use('/stories', storiesRouter);
-
-  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+queueManager.setupQueue('update_story_info').then((ch) => {
+  console.log('RabbitMQ setup completed');
 }).catch(err => {
-  console.error('Database connection failed', err);
+  console.error('Failed to setup RabbitMQ', err);
 });
+
+// TODO: createConnection is deprecated, What else can be used?
+// TODO: ormconfig.json has to use the environment variables
+ createConnection().then(async connection => {
+  // Your previous setup code here
+  
+  RegisterRoutes(app);
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.listen(3000, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}).catch(error => console.log(error)); 
+
+// connectDB.initialize().then(async () => {
+//   RegisterRoutes(app);
+//   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//   app.listen(3000, () => {
+//     console.log(`Server is running on port ${PORT}`);
+//   });
+// });
