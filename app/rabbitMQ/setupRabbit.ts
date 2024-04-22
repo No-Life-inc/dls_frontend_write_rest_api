@@ -22,23 +22,10 @@ const AMQP_URL = `amqp://${RABBIT_USER}:${RABBIT_PW}@${RABBIT_URL}`;
  * @returns {Promise<Channel>} - A promise that resolves to a RabbitMQ channel
  */
 
-<<<<<<< HEAD
-/***
- * Set up RabbitMQ
- */
-export function setupRabbitMQ() {
-  return new Promise<void>((resolve, reject) => {
-    amqp.connect(AMQP_URL, (error0, connection) => {
-      if (error0) {
-        console.error('Failed to connect to RabbitMQ:', error0);
-        reject(error0);
-        return;
-      }
-=======
+
 export class QueueManager {
   private static instance: QueueManager;
   private channels: Record<string, Channel> = {};
->>>>>>> orm
 
   private constructor() {}
 
@@ -80,14 +67,12 @@ export class QueueManager {
   }
 }
 
-<<<<<<< HEAD
 /***
  * Publish a message to the queue
  */
-export function publishToQueue(message: any) {
-=======
+
 export function publishToQueue(message: any, channel: any = null, queueName: string) {
->>>>>>> orm
+
   if (!channel) {
     console.error('RabbitMQ channel is not set up. Call setupRabbitMQ first.');
     return;

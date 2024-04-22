@@ -11,17 +11,6 @@ import { StoryDTO } from '../entities/DTOs/StoryDTO';
 import { CreateStoryDTO } from '../entities/interfaces/CreateStoryDTO';
 
 const router = express.Router();
-
-<<<<<<< HEAD
-// POST endpoint for creating a new story
-/***
- * @swagger
- * /stories:
- *  post:
- *    summary: "Create a new story
- */
-router.post('/', async (req, res) => {
-=======
 // TODO: Get Ropository from TypeORM is deprecated, use getCustomRepository instead
 // TODO: Use DTOs instead of Entities (Maybe)
 @Route('/stories')
@@ -51,7 +40,6 @@ export class StoriesController {
     newStoryInfo.story = newStory; // Set the story
     newStory.storyInfos = [newStoryInfo];
 
->>>>>>> orm
     try {
       await storyRepository.save(newStory);
     } catch (error) {
