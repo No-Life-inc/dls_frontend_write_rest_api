@@ -37,6 +37,6 @@ export class UserInfoDTO {
     this.imgUrl = userInfo.imgUrl;
     this.email = userInfo.email;
     this.createdAt = userInfo.createdAt;
-    this.user = new UserDTO(userInfo.user);
+    // this.user = new UserDTO(userInfo.user);
   }
 }
