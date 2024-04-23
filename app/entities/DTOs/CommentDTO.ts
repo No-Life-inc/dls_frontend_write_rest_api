@@ -38,12 +38,16 @@ export class CommentDTO {
     this.commentId = comment.commentId;
     this.commentGuid = comment.commentGuid;
     this.createdAt = comment.createdAt;
-    this.commentInfos = comment.commentInfos.map(
-      (commentInfo) => new CommentInfoDTO(commentInfo)
-    );
-    this.commentReactions = comment.commentReactions.map(
-      (commentReaction) => new CommentReactionDTO(commentReaction)
-    );
+    if(comment.commentInfos){
+      this.commentInfos = comment.commentInfos.map(
+          (commentInfo) => new CommentInfoDTO(commentInfo)
+      );
+    }
+    if(comment.commentReactions){
+      this.commentReactions = comment.commentReactions.map(
+          (commentReaction) => new CommentReactionDTO(commentReaction)
+      );
+    }
     this.user = new UserDTO(comment.user);
     this.story = new StoryDTO(comment.story);
   }

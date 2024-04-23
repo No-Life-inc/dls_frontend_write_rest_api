@@ -1,16 +1,16 @@
 {
-    "entryFile": "./app/index.ts",
-    "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": ["./app/routes/*.ts"],
-    "spec": {
-      "outputDirectory": "./dist",
-      "specVersion": 3
-    },
-    "routes": {
-        "routesDir": "./app/routes"
-    },
-    "basePath": "v1",
+  "entryFile": "./app/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["./app/routes/*.ts"],
+  "spec": {
+    "outputDirectory": "./dist",
+    "specVersion": 3
+  },
+  "routes": {
+    "routesDir": "./app/routes"
+  },
+  "basePath": "v1",
   "models": {
     "basePath": ["./app/entities/dtos"]
   }
-  }
+}

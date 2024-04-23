@@ -26,5 +26,5 @@ export class StoryInfoDTO {
     this.bodyText = storyInfo.bodyText;
     this.imgUrl = storyInfo.imgUrl;
     this.createdAt = storyInfo.createdAt;
-    this.storyId = storyInfo.story.storyId;} 
+    this.storyId = storyInfo.storyInfoId;}
 }

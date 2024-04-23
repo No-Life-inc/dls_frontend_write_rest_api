@@ -4,6 +4,8 @@
 import { TsoaRoute, fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { StoriesController } from './stories';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CommentsController } from './comments';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
 
@@ -11,6 +13,17 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
+    "CommentInfoDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "commentInfoId": {"dataType":"double","required":true},
+            "bodyText": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "commentId": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CommentDTO": {
         "dataType": "refObject",
         "properties": {
@@ -21,17 +34,6 @@ const models: TsoaRoute.Models = {
             "commentReactions": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentReactionDTO"},"required":true},
             "user": {"ref":"UserDTO","required":true},
             "story": {"ref":"StoryDTO","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CommentInfoDTO": {
-        "dataType": "refObject",
-        "properties": {
-            "commentInfoId": {"dataType":"double","required":true},
-            "bodyText": {"dataType":"string","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "comment": {"ref":"CommentDTO","required":true},
         },
         "additionalProperties": false,
     },
@@ -298,8 +300,20 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"storyInfoId":{"dataType":"double"},"title":{"dataType":"string"},"bodyText":{"dataType":"string"},"imgUrl":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"story":{"ref":"Story"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateCommentDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "commentGuid": {"dataType":"string","required":true},
+            "story": {"dataType":"nestedObjectLiteral","nestedProperties":{"storyGuid":{"dataType":"string","required":true}},"required":true},
+            "createdAt": {"dataType":"string","required":true},
+            "user": {"dataType":"nestedObjectLiteral","nestedProperties":{"userGuid":{"dataType":"string","required":true}},"required":true},
+            "commentInfo": {"dataType":"nestedObjectLiteral","nestedProperties":{"bodyText":{"dataType":"string","required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
-const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras"});
+const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
@@ -358,6 +372,36 @@ export function RegisterRoutes(app: Router) {
 
               templateService.apiHandler({
                 methodName: 'updateStory',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/comments',
+            ...(fetchMiddlewares<RequestHandler>(CommentsController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.createComment)),
+
+            function CommentsController_createComment(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateCommentDTO"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new CommentsController();
+
+              templateService.apiHandler({
+                methodName: 'createComment',
                 controller,
                 response,
                 next,

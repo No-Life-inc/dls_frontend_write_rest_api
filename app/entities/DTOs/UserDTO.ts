@@ -51,12 +51,12 @@ export class UserDTO {
     this.userId = user.userId;
     this.userGuid = user.userGuid;
     this.createdAt = user.createdAt;
-    this.comments = user.comments.map((comment) => new CommentDTO(comment));
-    this.reactions = user.reactions.map((reaction) => new ReactionDTO(reaction));
-    this.stories = user.stories.map((story) => new StoryDTO(story));
-    this.blockedBy = user.blockedBy.map((blocked) => new BlockedDTO(blocked));
-    this.blocked = user.blocked.map((blocked) => new BlockedDTO(blocked));
-    this.user = user.user.map((friend) => new FriendDTO(friend));
-    this.friends = user.friends.map((friend) => new FriendDTO(friend));
+    if(user.comments) this.comments = user.comments.map((comment) => new CommentDTO(comment));
+    if(user.reactions) this.reactions = user.reactions.map((reaction) => new ReactionDTO(reaction));
+    if(user.stories) this.stories = user.stories.map((story) => new StoryDTO(story));
+    if(user.blockedBy) this.blockedBy = user.blockedBy.map((blocked) => new BlockedDTO(blocked));
+    if(user.blocked) this.blocked = user.blocked.map((blocked) => new BlockedDTO(blocked));
+    if(user.user) this.user = user.user.map((friend) => new FriendDTO(friend));
+    if(user.friends) this.friends = user.friends.map((friend) => new FriendDTO(friend));
   }
 }
