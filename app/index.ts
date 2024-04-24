@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 
 const app = express();
+const router = express.Router();
 app.use(cors({ origin: 'http://localhost:8080' }));
 
 /***
@@ -50,9 +51,11 @@ queueManager.setupQueue('new_comments').then((ch) => {
  createConnection().then(async connection => {
   // Your previous setup code here
   
-  RegisterRoutes(app);
+  RegisterRoutes(router);
+  app.use('/v1', router);
+
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  app.listen(3000, () => {
+  app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 }).catch(error => console.log(error)); 

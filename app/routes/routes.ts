@@ -58,6 +58,38 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"double","required":true},
+            "userGuid": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "infos": {"dataType":"array","array":{"dataType":"refObject","ref":"UserInfoDTO"},"required":true},
+            "comments": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentDTO"},"required":true},
+            "reactions": {"dataType":"array","array":{"dataType":"refObject","ref":"ReactionDTO"},"required":true},
+            "stories": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryDTO"},"required":true},
+            "blockedBy": {"dataType":"array","array":{"dataType":"refObject","ref":"BlockedDTO"},"required":true},
+            "blocked": {"dataType":"array","array":{"dataType":"refObject","ref":"BlockedDTO"},"required":true},
+            "user": {"dataType":"array","array":{"dataType":"refObject","ref":"FriendDTO"},"required":true},
+            "friends": {"dataType":"array","array":{"dataType":"refObject","ref":"FriendDTO"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserInfoDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "userInfoId": {"dataType":"double","required":true},
+            "firstName": {"dataType":"string","required":true},
+            "lastName": {"dataType":"string","required":true},
+            "imgUrl": {"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},
+            "email": {"dataType":"string","required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "user": {"ref":"UserDTO","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "StoryDTO": {
         "dataType": "refObject",
         "properties": {
@@ -69,23 +101,6 @@ const models: TsoaRoute.Models = {
             "user": {"ref":"UserDTO","required":true},
             "storyInfos": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryInfoDTO"},"required":true},
             "storyReactions": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryReactionDTO"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "UserDTO": {
-        "dataType": "refObject",
-        "properties": {
-            "userId": {"dataType":"double","required":true},
-            "userGuid": {"dataType":"string","required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "comments": {"dataType":"array","array":{"dataType":"refObject","ref":"CommentDTO"},"required":true},
-            "reactions": {"dataType":"array","array":{"dataType":"refObject","ref":"ReactionDTO"},"required":true},
-            "stories": {"dataType":"array","array":{"dataType":"refObject","ref":"StoryDTO"},"required":true},
-            "blockedBy": {"dataType":"array","array":{"dataType":"refObject","ref":"BlockedDTO"},"required":true},
-            "blocked": {"dataType":"array","array":{"dataType":"refObject","ref":"BlockedDTO"},"required":true},
-            "user": {"dataType":"array","array":{"dataType":"refObject","ref":"FriendDTO"},"required":true},
-            "friends": {"dataType":"array","array":{"dataType":"refObject","ref":"FriendDTO"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -313,7 +328,7 @@ const models: TsoaRoute.Models = {
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
-const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
+const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras"});
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
