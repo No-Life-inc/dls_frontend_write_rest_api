@@ -30,13 +30,13 @@ export class StoriesController {
     //insert the data from the request body into the newStory object
     
     newStory.storyGuid = requestBody.storyGuid;
-    newStory.createdAt = new Date(requestBody.createdAt);
+    newStory.createdAt = new Date();
     newStory.user = user;
     let newStoryInfo = new StoryInfo();
     newStoryInfo.title = requestBody.storyInfo.title;
     newStoryInfo.bodyText = requestBody.storyInfo.bodyText;
     newStoryInfo.imgUrl = requestBody.storyInfo.imgUrl;
-    newStoryInfo.createdAt = new Date(requestBody.createdAt);
+    newStoryInfo.createdAt = new Date();
     newStoryInfo.story = newStory; // Set the story
     newStory.storyInfos = [newStoryInfo];
 
@@ -64,9 +64,9 @@ export class StoriesController {
     // Update the storyInfo
     const newStoryInfo = Object.assign(new StoryInfo(), storyData.storyInfo);
     newStoryInfo.story = story; // Set the story
-  
-    // Append the new StoryInfo to the existing ones
+    newStoryInfo.createdAt = new Date();
     story.storyInfos.push(newStoryInfo);
+
     
     // Save the story
     const updatedStory = await storyRepository.save(story);
