@@ -6,6 +6,7 @@ import { UserDTO } from "./UserDTO";
 import { StoryInfoDTO } from "./StoryInfoDTO";
 import { StoryReactionDTO } from "./StoryReactionDTO";
 import { Story } from "../entities/Story";
+import { UserInfoDTO } from "./UserInfoDTO";
 
 export class StoryDTO {
   @IsOptional()
@@ -44,22 +45,26 @@ export class StoryDTO {
     this.createdAt = story.createdAt;
     if(story.comments)
       this.comments = story.comments.map((comment) => new CommentDTO(comment));
-
-    if(story.reactions){
+    if(story.reactions)
       this.reactions = story.reactions.map(
-          (reaction) => new ReactionDTO(reaction)
+        (reaction) => new ReactionDTO(reaction)
       );
-    }
-    this.user = new UserDTO(story.user);
-    if(story.storyInfos){
+    this.user = new UserDTO();
+    this.user.userId = story.user.userId;
+    this.user.userGuid = story.user.userGuid;
+    this.user.createdAt = story.user.createdAt;
+    if(story.user.userInfos)
+      this.user.infos = story.user.userInfos.map(
+        (userInfo) => new UserInfoDTO(userInfo)
+      );
+
+    if(story.storyInfos)
       this.storyInfos = story.storyInfos.map(
-          (storyInfo) => new StoryInfoDTO(storyInfo)
+        (storyInfo) => new StoryInfoDTO(storyInfo)
       );
-    }
-    if(story.storyReactions){
+    if(story.storyReactions)
       this.storyReactions = story.storyReactions.map(
-          (storyReaction) => new StoryReactionDTO(storyReaction)
+        (storyReaction) => new StoryReactionDTO(storyReaction)
       );
-    }
   }
 }

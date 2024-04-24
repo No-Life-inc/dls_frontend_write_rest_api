@@ -6,6 +6,7 @@ import { FriendDTO } from './FriendDTO';
 import { ReactionDTO  } from './ReactionDTO';
 import { StoryDTO } from './StoryDTO';
 import { User } from '../entities/User';
+import { UserInfoDTO } from './UserInfoDTO';
 
 
 export class UserDTO {
@@ -18,6 +19,11 @@ export class UserDTO {
 
   @IsDate()
   createdAt: Date;
+
+  // add UserInfoDTO
+  @ValidateNested({ each: true })
+  @Type(() => UserInfoDTO)
+  infos: UserInfoDTO[];
 
   @ValidateNested({ each: true })
   @Type(() => CommentDTO)
@@ -47,7 +53,10 @@ export class UserDTO {
   @Type(() => FriendDTO)
   friends: FriendDTO[];
 
-  constructor(user: User) {
+  constructor(user?: User) {
+    if (!user) {
+      return;
+    }
     this.userId = user.userId;
     this.userGuid = user.userGuid;
     this.createdAt = user.createdAt;
