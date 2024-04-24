@@ -42,7 +42,7 @@ export class StoryDTO {
   constructor(story: Story) {
     // this.storyId = story.storyId;
     this.storyGuid = story.storyGuid;
-    // this.createdAt = story.createdAt;
+    this.createdAt = story.createdAt;
     if(story.comments)
       this.comments = story.comments.map((comment) => new CommentDTO(comment));
     if(story.reactions)

@@ -53,54 +53,30 @@ export class StoriesController {
   }
 
   @Put('{storyGuid}')
-public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfos: Partial<StoryInfo>[] }): Promise<any> {
-  const storyRepository = getRepository(Story);
-  const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }, relations: ['storyInfos', 'user', 'user.userInfos']});
-
-  if (!story) {
-    throw new Error('Story not found');
-  }
-
-  // Update the storyInfos
-  const newStoryInfos = storyData.storyInfos.map((info) => {
-    const storyInfo = Object.assign(new StoryInfo(), info);
-    storyInfo.story = story; // Set the story
-    return storyInfo;
-  });
-
-  // Append the new StoryInfos to the existing ones
-  story.storyInfos.push(...newStoryInfos);
+  public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo> }): Promise<any> {
+    const storyRepository = getRepository(Story);
+    const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }, relations: ['storyInfos', 'user', 'user.userInfos']});
   
-  // Save the story
-  const updatedStory = await storyRepository.save(story);
-
-  // Take the latest storyInfo
-const latestStoryInfo = updatedStory.storyInfos[updatedStory.storyInfos.length - 1];
-const latestUserInfo = updatedStory.user.userInfos[updatedStory.user.userInfos.length - 1];
-
-// Create a new object with only the properties you want to return
-const response = {
-  storyGuid: updatedStory.storyGuid,
-  user: {
-    userGuid: updatedStory.user.userGuid,
-    userInfo: updatedStory.user && updatedStory.user.userInfos && updatedStory.user.userInfos.length > 0 ? {
-      firstName: latestUserInfo.firstName,
-      lastName: latestUserInfo.lastName,
-      imgUrl: latestUserInfo.imgUrl,
-      createdAt: latestUserInfo.createdAt,
-    } : null,
-  },
-  storyInfo: {
-    title: latestStoryInfo.title,
-    bodyText: latestStoryInfo.bodyText,
-    imgUrl: latestStoryInfo.imgUrl,
-  },
-};
-
-updateStoryInfo(storyGuid, response.storyInfo);
-return response;
-
-}
+    if (!story) {
+      throw new Error('Story not found');
+    }
+  
+    // Update the storyInfo
+    const newStoryInfo = Object.assign(new StoryInfo(), storyData.storyInfo);
+    newStoryInfo.story = story; // Set the story
+  
+    // Append the new StoryInfo to the existing ones
+    story.storyInfos.push(newStoryInfo);
+    
+    // Save the story
+    const updatedStory = await storyRepository.save(story);
+  
+    // Convert the updated story to a StoryDTO
+    const storyDTO = new StoryDTO(updatedStory);
+  
+    updateStoryInfo(storyGuid, storyDTO.storyInfo);
+    return storyDTO;
+  }
 }
 
 export default router;

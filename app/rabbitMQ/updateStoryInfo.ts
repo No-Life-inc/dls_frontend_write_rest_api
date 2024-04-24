@@ -11,7 +11,7 @@ import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
     const storyForMongoDB = {
         storyGuid: storyGuid,
-        storyInfos: updatedStoryInfo,
+        storyInfo: updatedStoryInfo,
         };
 
     // Get the channel from the QueueManager instance
