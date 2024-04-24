@@ -15,8 +15,8 @@ export class ReactionDTO {
   reactionTypeId: number;
 
   constructor(reaction: Reaction) {
-    this.userId = reaction.user.userId;
-    this.storyId = reaction.story.storyId;
+    // this.userId = reaction.user.userId;
+    // this.storyId = reaction.story.storyId;
     this.reactionTypeId = reaction.reactionType.reactionTypeId;
   }
 }

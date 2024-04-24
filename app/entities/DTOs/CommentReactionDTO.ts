@@ -17,7 +17,7 @@ export class CommentReactionDTO {
   reaction: ReactionDTO;
 
   constructor(commentReaction: CommentReaction) {
-    this.commentReactionId = commentReaction.commentReactionId;
+    // this.commentReactionId = commentReaction.commentReactionId;
     this.comment = new CommentDTO(commentReaction.comment);
     this.reaction = new ReactionDTO(commentReaction.reaction);
   }

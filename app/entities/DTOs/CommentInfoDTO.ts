@@ -17,9 +17,9 @@ export class CommentInfoDTO {
   commentId: number;
 
   constructor(commentInfo: CommentInfo) {
-    this.commentInfoId = commentInfo.commentInfoId;
+    // this.commentInfoId = commentInfo.commentInfoId;
     this.bodyText = commentInfo.bodyText;
     this.createdAt = commentInfo.createdAt;
-    this.commentId = commentInfo.comment.commentId;
+    // this.commentId = commentInfo.comment.commentId;
   }
 }

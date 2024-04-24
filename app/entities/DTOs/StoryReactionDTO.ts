@@ -9,7 +9,7 @@ export class StoryReactionDTO {
   reactionId: number;
 
   constructor(storyReaction: StoryReaction) {
-    this.storyId = storyReaction.story.storyId;
+    // this.storyId = storyReaction.story.storyId;
     this.reactionId = storyReaction.reaction.reactionId;
   }
 }

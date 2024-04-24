@@ -33,16 +33,16 @@ export class StoryDTO {
 
   @ValidateNested({ each: true })
   @Type(() => StoryInfoDTO)
-  storyInfos: StoryInfoDTO[];
+  storyInfo: StoryInfoDTO;
 
   @ValidateNested({ each: true })
   @Type(() => StoryReactionDTO)
   storyReactions: StoryReactionDTO[];
 
   constructor(story: Story) {
-    this.storyId = story.storyId;
+    // this.storyId = story.storyId;
     this.storyGuid = story.storyGuid;
-    this.createdAt = story.createdAt;
+    // this.createdAt = story.createdAt;
     if(story.comments)
       this.comments = story.comments.map((comment) => new CommentDTO(comment));
     if(story.reactions)
@@ -50,18 +50,22 @@ export class StoryDTO {
         (reaction) => new ReactionDTO(reaction)
       );
     this.user = new UserDTO();
-    this.user.userId = story.user.userId;
+    // this.user.userId = story.user.userId;
     this.user.userGuid = story.user.userGuid;
-    this.user.createdAt = story.user.createdAt;
-    if(story.user.userInfos)
-      this.user.infos = story.user.userInfos.map(
-        (userInfo) => new UserInfoDTO(userInfo)
-      );
+    // this.user.createdAt = story.user.createdAt;
+    if (story.user && story.user.userInfos) {
+      const latestUserInfo = story.user.userInfos.reduce((latest, current) => {
+        return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
+      });
+      this.user.userInfo = new UserInfoDTO(latestUserInfo);
+    }
 
-    if(story.storyInfos)
-      this.storyInfos = story.storyInfos.map(
-        (storyInfo) => new StoryInfoDTO(storyInfo)
-      );
+    if (story.storyInfos) {
+      const latestStoryInfo = story.storyInfos.reduce((latest, current) => {
+        return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
+      });
+      this.storyInfo = new StoryInfoDTO(latestStoryInfo);
+    }
     if(story.storyReactions)
       this.storyReactions = story.storyReactions.map(
         (storyReaction) => new StoryReactionDTO(storyReaction)

@@ -35,7 +35,7 @@ export class CommentDTO {
   story: StoryDTO;
 
   constructor(comment: Comment) {
-    this.commentId = comment.commentId;
+    // this.commentId = comment.commentId;
     this.commentGuid = comment.commentGuid;
     this.createdAt = comment.createdAt;
     if(comment.commentInfos){

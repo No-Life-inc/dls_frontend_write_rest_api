@@ -19,7 +19,7 @@ export class BlockedDTO {
   blocked: UserDTO[];
 
   constructor(blocked: Blocked) {
-    this.blockedId = blocked.blockedId;
+    // this.blockedId = blocked.blockedId;
     this.createdAt = blocked.createdAt;
     this.users = blocked.users.map((user) => new UserDTO(user));
     this.blocked = blocked.blocked.map((blocked) => new UserDTO(blocked));

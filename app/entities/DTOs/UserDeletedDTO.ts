@@ -16,7 +16,7 @@ export class UserDeletedDTO {
   user: UserDTO;
 
   constructor(user: User) {
-    this.userId = user.userId;
+    // this.userId = user.userId;
     this.createdAt = user.createdAt;
     this.user = new UserDTO(user);
   }

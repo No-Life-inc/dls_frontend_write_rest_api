@@ -23,7 +23,7 @@ export class UserDTO {
   // add UserInfoDTO
   @ValidateNested({ each: true })
   @Type(() => UserInfoDTO)
-  infos: UserInfoDTO[];
+  userInfo: UserInfoDTO;
 
   @ValidateNested({ each: true })
   @Type(() => CommentDTO)
@@ -60,6 +60,12 @@ export class UserDTO {
     this.userId = user.userId;
     this.userGuid = user.userGuid;
     this.createdAt = user.createdAt;
+    if (user.userInfos) {
+      const latestUserInfo = user.userInfos.reduce((latest, current) => {
+        return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
+      });
+      this.userInfo = new UserInfoDTO(latestUserInfo);
+    }
     if(user.comments) this.comments = user.comments.map((comment) => new CommentDTO(comment));
     if(user.reactions) this.reactions = user.reactions.map((reaction) => new ReactionDTO(reaction));
     if(user.stories) this.stories = user.stories.map((story) => new StoryDTO(story));

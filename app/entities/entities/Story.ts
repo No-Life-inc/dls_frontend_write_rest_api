@@ -25,13 +25,13 @@ export class Story {
       this.createdAt = dto.createdAt;
       this.user = new User();
       this.user.userGuid = dto.user.userGuid;
-      this.storyInfos = dto.storyInfos.map(storyInfoDTO => {
+      if (dto.storyInfo) {
         let storyInfo = new StoryInfo();
-        storyInfo.title = storyInfoDTO.title;
-        storyInfo.bodyText = storyInfoDTO.bodyText;
-        storyInfo.imgUrl = storyInfoDTO.imgUrl;
-        return storyInfo;
-      });
+        storyInfo.title = dto.storyInfo.title;
+        storyInfo.bodyText = dto.storyInfo.bodyText;
+        storyInfo.imgUrl = dto.storyInfo.imgUrl;
+        this.storyInfos = [storyInfo];
+      }
     }
   }
 

@@ -31,12 +31,12 @@ export class UserInfoDTO {
   user: UserDTO;
 
   constructor(userInfo: UserInfo) {
-    this.userInfoId = userInfo.userInfoId;
+    // this.userInfoId = userInfo.userInfoId;
     this.firstName = userInfo.firstName;
     this.lastName = userInfo.lastName;
     this.imgUrl = userInfo.imgUrl;
     this.email = userInfo.email;
-    this.createdAt = userInfo.createdAt;
+    // this.createdAt = userInfo.createdAt;
     // this.user = new UserDTO(userInfo.user);
   }
 }

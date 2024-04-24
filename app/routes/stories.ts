@@ -45,9 +45,11 @@ export class StoriesController {
     } catch (error) {
       throw new HttpError(400, 'Failed to create story');
     }
-  
-    publishNewStory(newStory);
-    return new StoryDTO(newStory);
+    
+    const storyDTO = new StoryDTO(newStory)
+
+    publishNewStory(storyDTO);
+    return storyDTO;
   }
 
   @Put('{storyGuid}')
