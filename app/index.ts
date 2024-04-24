@@ -1,12 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { connectToDb } from './db/dbConnect';
 import { QueueManager } from './rabbitMQ/setupRabbit';
 import { RegisterRoutes } from './routes/routes';
 import { config } from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from "../dist/swagger.json";
-import connectDB from './config/ormconfig';
 import { createConnection } from 'typeorm';
 
 
@@ -30,15 +28,21 @@ app.use(express.json());
 // Get the QueueManager instance and set up the queue
 const queueManager = QueueManager.getInstance();
 queueManager.setupQueue('new_stories').then((ch) => {
-  console.log('RabbitMQ setup completed');
+  console.log('RabbitMQ new_stories setup completed');
 }).catch(err => {
   console.error('Failed to setup RabbitMQ', err);
 });
 
 queueManager.setupQueue('update_story_info').then((ch) => {
-  console.log('RabbitMQ setup completed');
+  console.log('RabbitMQ update_story_info setup completed');
 }).catch(err => {
   console.error('Failed to setup RabbitMQ', err);
+});
+
+queueManager.setupQueue('new_comments').then((ch) => {
+    console.log('RabbitMQ new_comment setup completed');
+}).catch(err => {
+    console.error('Failed to setup RabbitMQ', err);
 });
 
 // TODO: createConnection is deprecated, What else can be used?

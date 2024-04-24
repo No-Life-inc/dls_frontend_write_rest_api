@@ -45,7 +45,6 @@ export class StoryDTO {
     this.createdAt = story.createdAt;
     if(story.comments)
       this.comments = story.comments.map((comment) => new CommentDTO(comment));
-    
     if(story.reactions)
       this.reactions = story.reactions.map(
         (reaction) => new ReactionDTO(reaction)
