@@ -1,5 +1,4 @@
 import { StoryDTO } from "../entities/DTOs/StoryDTO";
-import { Story } from "../entities/entities/Story";
 import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue
 

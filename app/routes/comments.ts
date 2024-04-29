@@ -54,8 +54,10 @@ export class CommentsController{
             throw new HttpError(400, 'Failed to add comment to story');
         }
 
-        publishNewComment(newComment)
-        return new CommentDTO(newComment)
+        const commentDTO = new CommentDTO(newComment)
+
+        publishNewComment(commentDTO)
+        return commentDTO;
     }
 }
 
