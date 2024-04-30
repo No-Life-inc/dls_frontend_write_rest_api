@@ -1,4 +1,4 @@
-import {Body, Post, Route} from "tsoa";
+import {Body, Post, Route, Request} from "tsoa";
 import express from "express";
 import {CreateCommentDTO} from "../entities/interfaces/CreateCommentDTO";
 import {CommentDTO} from "../entities/DTOs/CommentDTO";
@@ -15,13 +15,11 @@ const router = express.Router();
 @Route('/comments')
 export class CommentsController{
     @Post()
-    public async createComment(@Body() requestBody: CreateCommentDTO): Promise<CommentDTO>{
-        console.log('Request body:', requestBody); // Log the request body
+    public async createComment(@Request() request: express.Request, @Body() requestBody: CreateCommentDTO): Promise<CommentDTO>{
         const userRepository = getRepository(User);
         let user;
         try{
-        user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }});
-
+            user = await userRepository.findOne({ where: { userGuid: request.userGuid }});
         if(!user){
             throw new HttpError(400,'User not found')
         }}catch(error){
@@ -37,11 +35,11 @@ export class CommentsController{
 
         let newComment = new Comment();
         newComment.commentGuid = requestBody.commentGuid;
-        newComment.createdAt = new Date(requestBody.createdAt);
+        newComment.createdAt = new Date();
         newComment.user = user;
         let newCommentInfo = new CommentInfo();
         newCommentInfo.bodyText = requestBody.commentInfo.bodyText;
-        newCommentInfo.createdAt = new Date(requestBody.createdAt);
+        newCommentInfo.createdAt = new Date();
         newCommentInfo.comment = newComment;
         newComment.commentInfos = [newCommentInfo]
         newComment.story = story;
