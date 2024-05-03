@@ -320,8 +320,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "commentGuid": {"dataType":"string","required":true},
             "story": {"dataType":"nestedObjectLiteral","nestedProperties":{"storyGuid":{"dataType":"string","required":true}},"required":true},
-            "createdAt": {"dataType":"string","required":true},
-            "user": {"dataType":"nestedObjectLiteral","nestedProperties":{"userGuid":{"dataType":"string","required":true}},"required":true},
             "commentInfo": {"dataType":"nestedObjectLiteral","nestedProperties":{"bodyText":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
@@ -356,6 +354,36 @@ export function RegisterRoutes(app: Router) {
 
               templateService.apiHandler({
                 methodName: 'createStory',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/stories/:storyGuid',
+            ...(fetchMiddlewares<RequestHandler>(StoriesController)),
+            ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.deleteStory)),
+
+            function StoriesController_deleteStory(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new StoriesController();
+
+              templateService.apiHandler({
+                methodName: 'deleteStory',
                 controller,
                 response,
                 next,
@@ -404,6 +432,7 @@ export function RegisterRoutes(app: Router) {
 
             function CommentsController_createComment(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateCommentDTO"},
             };
 

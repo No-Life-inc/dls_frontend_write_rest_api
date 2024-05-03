@@ -55,6 +55,12 @@ queueManager.setupQueue('new_comments').then((ch) => {
     console.error('Failed to setup RabbitMQ', err);
 });
 
+queueManager.setupQueue('delete_story').then((ch) => {
+  console.log('RabbitMQ delete_story setup completed');
+}).catch(err => {
+  console.error('Failed to setup RabbitMQ', err);
+});
+
 // TODO: createConnection is deprecated, What else can be used?
 // TODO: ormconfig.json has to use the environment variables
  createConnection().then(async connection => {

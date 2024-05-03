@@ -44,7 +44,7 @@ export class Story {
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @OneToMany(() => Comment, (comments) => comments.story)
+  @OneToMany(() => Comment, (comments) => comments.story,  { onDelete: 'CASCADE' })
   comments: Comment[];
 
   @OneToMany(() => Reaction, (reactions) => reactions.story)
@@ -54,7 +54,7 @@ export class Story {
   @JoinColumn([{ name: "user_id", referencedColumnName: "userId" }])
   user: User;
 
-  @OneToMany(() => StoryInfo, (storyInfo) => storyInfo.story, { cascade: true }) //needs to be cascade for it to be created
+  @OneToMany(() => StoryInfo, (storyInfo) => storyInfo.story, { cascade: true, onDelete: 'CASCADE' }) //needs to be cascade for it to be created
   storyInfos: StoryInfo[];
 
   @OneToMany(() => StoryReaction, (storyReaction) => storyReaction.story)

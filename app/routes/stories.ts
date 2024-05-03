@@ -4,10 +4,11 @@ import { StoryInfo } from '../entities/entities/StoryInfo';
 import { User } from '../entities/entities/User';
 import { getRepository } from 'typeorm';
 import publishNewStory from '../rabbitMQ/publishNewStory';
-import { Body, Post, Route, Path, Put } from 'tsoa';
+import { Body, Post, Delete, Route, Path, Put } from 'tsoa';
 import { HttpError } from 'routing-controllers';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
 import { StoryDTO } from '../entities/DTOs/StoryDTO';
+import {deleteStory} from '../rabbitMQ/deleteStory';
 import { CreateStoryDTO } from '../entities/interfaces/CreateStoryDTO';
 
 const router = express.Router();
@@ -50,6 +51,22 @@ export class StoriesController {
 
     publishNewStory(storyDTO);
     return storyDTO;
+  }
+
+  @Delete('{storyGuid}')
+  public async deleteStory(@Path() storyGuid: string): Promise<any> {
+    const storyRepository = getRepository(Story);
+    const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }});
+
+    if (!story) {
+      throw new Error('Story not found');
+    }
+
+    // Delete the story
+    await storyRepository.remove(story);
+
+    // Publish the delete event to the queue
+    deleteStory(storyGuid);
   }
 
   @Put('{storyGuid}')
