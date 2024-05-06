@@ -1,4 +1,4 @@
-import {Body, Post, Route, Request} from "tsoa";
+import {Body, Post, Route, Request, Delete, Path} from "tsoa";
 import express from "express";
 import {CreateCommentDTO} from "../entities/interfaces/CreateCommentDTO";
 import {CommentDTO} from "../entities/DTOs/CommentDTO";
@@ -9,25 +9,25 @@ import {CommentInfo} from "../entities/entities/CommentInfo";
 import {Story} from "../entities/entities/Story"
 import {HttpError} from "routing-controllers";
 import {publishNewComment} from "../rabbitMQ/publishNewComment"
+import {deleteComment} from "../rabbitMQ/deleteComment"
 
 const router = express.Router();
 
 @Route('/comments')
 export class CommentsController{
     @Post()
-    public async createComment(@Request() request: express.Request, @Body() requestBody: CreateCommentDTO): Promise<CommentDTO>{
+    public async createComment(@Request() req: any, @Body() requestBody: CreateCommentDTO): Promise<CommentDTO>{
+        console.log(req.userGuid)
+        const userGuid = req.userGuid;
         const userRepository = getRepository(User);
-        let user;
-        try{
-            user = await userRepository.findOne({ where: { userGuid: request.userGuid }});
-        if(!user){
-            throw new HttpError(400,'User not found')
-        }}catch(error){
-            console.error("Error fetching user:",error)
+        const user = await userRepository.findOne({ where: { userGuid: userGuid }, relations: ['userInfos']});
+
+        if (!user) {
+        throw new HttpError(400, 'User not found');
         }
 
         const storyRepository = getRepository(Story)
-        const story = await storyRepository.findOne({where: {storyGuid: requestBody.story.storyGuid}, relations: ['storyInfos']})
+        const story = await storyRepository.findOne({where: {storyGuid: requestBody.story.storyGuid}, relations: ['storyInfos', 'comments', 'user', 'user.userInfos']});
 
         if(!story){
             throw new HttpError(404, 'Story not found');
@@ -44,18 +44,46 @@ export class CommentsController{
         newComment.commentInfos = [newCommentInfo]
         newComment.story = story;
         newComment.story.storyGuid = requestBody.story.storyGuid;
-        story.user = user;
+        
+        // Initialize the comments array if it's undefined
+        if (!story.comments) {
+            story.comments = [];
+        }
+
+        // Add the new comment to the story's comments array
+        story.comments.push(newComment);
+
+        const commentRepository = getRepository(Comment);
+
 
         try{
             await storyRepository.save(story);
+            await commentRepository.save(newComment);
         }catch(error){
             throw new HttpError(400, 'Failed to add comment to story');
         }
 
         const commentDTO = new CommentDTO(newComment)
+        console.log(commentDTO);
 
         publishNewComment(commentDTO)
         return commentDTO;
+    }
+
+    @Delete('{commentGuid}')
+    public async deleteComment(@Path() commentGuid: string): Promise<any> {
+        const commentRepository = getRepository(Comment);
+        const comment = await commentRepository.findOne({ where: { commentGuid: commentGuid }});
+
+        if (!comment) {
+        throw new Error('Comment not found');
+        }
+
+        // Delete the comment
+        await commentRepository.remove(comment);
+
+        // Publish the delete event to the queue
+        deleteComment(commentGuid);
     }
 }
 

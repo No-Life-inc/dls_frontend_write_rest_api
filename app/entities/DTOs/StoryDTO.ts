@@ -39,25 +39,26 @@ export class StoryDTO {
   @Type(() => StoryReactionDTO)
   storyReactions: StoryReactionDTO[];
 
-  constructor(story: Story) {
+  constructor(story: Story, createComments = true) {
     // this.storyId = story.storyId;
     this.storyGuid = story.storyGuid;
     this.createdAt = story.createdAt;
-    if(story.comments)
-      this.comments = story.comments.map((comment) => new CommentDTO(comment));
+    if (createComments && story.comments) {
+      this.comments = story.comments.map(comment => new CommentDTO(comment));
+    }
     if(story.reactions)
       this.reactions = story.reactions.map(
         (reaction) => new ReactionDTO(reaction)
       );
-    this.user = new UserDTO();
-    // this.user.userId = story.user.userId;
-    this.user.userGuid = story.user.userGuid;
-    // this.user.createdAt = story.user.createdAt;
-    if (story.user && story.user.userInfos) {
-      const latestUserInfo = story.user.userInfos.reduce((latest, current) => {
-        return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
-      });
-      this.user.userInfo = new UserInfoDTO(latestUserInfo);
+      if (story.user) {
+        this.user = new UserDTO();
+        this.user.userGuid = story.user.userGuid;
+        if (story.user.userInfos) {
+            const latestUserInfo = story.user.userInfos.reduce((latest, current) => {
+                return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
+            });
+            this.user.userInfo = new UserInfoDTO(latestUserInfo);
+        }
     }
 
     if (story.storyInfos) {

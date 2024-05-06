@@ -42,7 +42,7 @@ export class Comment {
   @Column("datetime", { name: "created_at", nullable: false, default: () => "getdate()"})
   createdAt: Date;
 
-  @OneToMany(() => CommentInfo, (commentInfo) => commentInfo.comment)
+  @OneToMany(() => CommentInfo, (commentInfo) => commentInfo.comment, {cascade: true, onDelete: 'CASCADE' })
   commentInfos: CommentInfo[];
 
   @OneToMany(

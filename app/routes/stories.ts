@@ -10,6 +10,7 @@ import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
 import { StoryDTO } from '../entities/DTOs/StoryDTO';
 import {deleteStory} from '../rabbitMQ/deleteStory';
 import { CreateStoryDTO } from '../entities/interfaces/CreateStoryDTO';
+import { Request } from 'tsoa';
 
 const router = express.Router();
 // TODO: Get Ropository from TypeORM is deprecated, use getCustomRepository instead
@@ -17,10 +18,11 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: CreateStoryDTO): Promise<StoryDTO> {
-    console.log('Request body:', requestBody); // Log the request body
+  public async createStory(@Body() requestBody: CreateStoryDTO, @Request() req: any): Promise<StoryDTO> {
+    console.log(req.userGuid)
+    const userGuid = req.userGuid;
     const userRepository = getRepository(User);
-    const user = await userRepository.findOne({ where: { userGuid: requestBody.user.userGuid }, relations: ['userInfos']});
+    const user = await userRepository.findOne({ where: { userGuid: userGuid }, relations: ['userInfos']});
 
     if (!user) {
       throw new HttpError(400, 'User not found');
@@ -33,6 +35,7 @@ export class StoriesController {
     newStory.storyGuid = requestBody.storyGuid;
     newStory.createdAt = new Date();
     newStory.user = user;
+    newStory.comments = []; // Initialize the comments field to an empty array
     let newStoryInfo = new StoryInfo();
     newStoryInfo.title = requestBody.storyInfo.title;
     newStoryInfo.bodyText = requestBody.storyInfo.bodyText;

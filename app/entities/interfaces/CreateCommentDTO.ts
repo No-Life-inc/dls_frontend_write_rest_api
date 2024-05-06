@@ -1,9 +1,9 @@
 export interface CreateCommentDTO {
   commentGuid: string;
-  story: {
-    storyGuid: string;
-  };
   commentInfo: {
-    bodyText: string;
+      bodyText: string;
+  };
+  story: {
+      storyGuid: string;
   };
 }
