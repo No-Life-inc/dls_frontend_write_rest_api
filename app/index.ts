@@ -2,10 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import { QueueManager } from './rabbitMQ/setupRabbit';
 import { RegisterRoutes } from './routes/routes';
-import { config } from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import * as swaggerDocument from "../dist/swagger.json";
 import { createConnection } from 'typeorm';
+import { config } from 'dotenv';
 import {expressjwt} from "express-jwt"
 import jwt from "jsonwebtoken"
 
@@ -22,11 +22,29 @@ declare global {
   }
 }
 
+
+const connectionOptions = {
+  name: "default",
+  type: "mssql" as const,
+  host: process.env.DB_SERVER,
+  port: 1433,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_FRONTEND,
+  synchronize: false,
+  entities: ["app/entities/entities/*.ts"],
+  options: {
+    encrypt: true,
+    trustServerCertificate: true
+  }
+};
+
+
 const PORT = process.env.PORT || 3000;
 
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:8080' }));
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 /***
  * Middleware to parse the request body as JSON
@@ -115,7 +133,7 @@ const router = express.Router();
 
 // TODO: createConnection is deprecated, What else can be used?
 // TODO: ormconfig.json has to use the environment variables
-createConnection().then(async connection => {
+createConnection(connectionOptions).then(async connection => {
   // Your previous setup code here
   
   RegisterRoutes(router);
