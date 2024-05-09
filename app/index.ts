@@ -27,7 +27,7 @@ const connectionOptions = {
   name: "default",
   type: "mssql" as const,
   host: process.env.DB_SERVER,
-  port: 1433,
+  port: Number(process.env.WRITE_DB_SERVER_PORT),
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_FRONTEND,
@@ -39,9 +39,7 @@ const connectionOptions = {
   }
 };
 
-
 const PORT = process.env.PORT || 3000;
-
 
 const app = express();
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
