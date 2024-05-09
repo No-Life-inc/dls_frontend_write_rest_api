@@ -93,6 +93,12 @@ queueManager.setupQueue('update_story_info').then((ch) => {
   console.error('Failed to setup RabbitMQ', err);
 });
 
+queueManager.setupQueue('update_comment_info').then((ch) => {
+  console.log('RabbitMQ update_comment_info setup completed');
+}).catch(err => {
+  console.error('Failed to setup RabbitMQ', err);
+});
+
 queueManager.setupQueue('new_comments').then((ch) => {
   console.log('RabbitMQ new_comment setup completed');
 }).catch(err => {
