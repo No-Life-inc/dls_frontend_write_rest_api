@@ -501,7 +501,6 @@ export function RegisterRoutes(app: Router) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     commentGuid: {"in":"path","name":"commentGuid","required":true,"dataType":"string"},
                     commentData: {"in":"body","name":"commentData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"commentInfo":{"ref":"Partial_CommentInfo_","required":true}}},
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
