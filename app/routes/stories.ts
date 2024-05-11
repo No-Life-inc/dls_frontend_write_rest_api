@@ -4,13 +4,17 @@ import { StoryInfo } from '../entities/entities/StoryInfo';
 import { User } from '../entities/entities/User';
 import { getRepository } from 'typeorm';
 import publishNewStory from '../rabbitMQ/publishNewStory';
-import { Body, Post, Delete, Route, Path, Put } from 'tsoa';
+import { Body, Post, Delete, Route, Path, Put, UploadedFile } from 'tsoa';
 import { HttpError } from 'routing-controllers';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
 import { StoryDTO } from '../entities/DTOs/StoryDTO';
 import {deleteStory} from '../rabbitMQ/deleteStory';
 import { CreateStoryDTO } from '../entities/interfaces/CreateStoryDTO';
 import { Request } from 'tsoa';
+import { upload } from '../config/upload';
+import multer from 'multer';
+import moment from 'moment';
+import fs from 'fs';
 
 const router = express.Router();
 // TODO: Get Ropository from TypeORM is deprecated, use getCustomRepository instead
@@ -18,7 +22,7 @@ const router = express.Router();
 @Route('/stories')
 export class StoriesController {
   @Post()
-  public async createStory(@Body() requestBody: CreateStoryDTO, @Request() req: any): Promise<StoryDTO> {
+  public async createStory(@Body() requestBody: CreateStoryDTO, @Request() req: any, @UploadedFile() file: Express.Multer.File): Promise<StoryDTO> {
     console.log(req.userGuid)
     const userGuid = req.userGuid;
     const userRepository = getRepository(User);
@@ -27,6 +31,11 @@ export class StoriesController {
     if (!user) {
       throw new HttpError(400, 'User not found');
     }
+
+      // Rename the file with a timestamp
+    const date = moment().format('YYYYMMDDHHmmss');
+    const newFilename = `${date}-${file.originalname}`;
+    fs.renameSync(file.path, `uploads/${newFilename}`);
 
     const storyRepository = getRepository(Story);
     let newStory = new Story();
@@ -39,7 +48,7 @@ export class StoriesController {
     let newStoryInfo = new StoryInfo();
     newStoryInfo.title = requestBody.storyInfo.title;
     newStoryInfo.bodyText = requestBody.storyInfo.bodyText;
-    newStoryInfo.imgUrl = requestBody.storyInfo.imgUrl;
+    newStoryInfo.imgUrl = newFilename;
     newStoryInfo.createdAt = new Date();
     newStoryInfo.story = newStory; // Set the story
     newStory.storyInfos = [newStoryInfo];

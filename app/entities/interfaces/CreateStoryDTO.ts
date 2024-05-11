@@ -1,3 +1,4 @@
+import { Express } from 'express';
 export interface CreateStoryDTO {
     storyGuid: string;
     createdAt: string;
@@ -7,6 +8,5 @@ export interface CreateStoryDTO {
     storyInfo: {
       title: string;
       bodyText: string;
-      imgUrl: string;
     };
   }
