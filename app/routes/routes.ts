@@ -409,7 +409,7 @@ export function RegisterRoutes(app: Router) {
             async function StoriesController_updateStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
-                    storyData: {"in":"body","name":"storyData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"storyInfo":{"ref":"Partial_StoryInfo_","required":true}}},
+                    storyData: {"in":"body","name":"storyData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"fileType":{"dataType":"string","required":true},"image":{"dataType":"string","required":true},"storyInfo":{"ref":"Partial_StoryInfo_","required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

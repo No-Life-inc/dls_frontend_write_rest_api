@@ -81,7 +81,7 @@ export class StoriesController {
   }
 
   @Put('{storyGuid}')
-  public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo> }): Promise<any> {
+  public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo>, image: string, fileType: string }): Promise<any> {
     const storyRepository = getRepository(Story);
     const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }, relations: ['storyInfos', 'user', 'user.userInfos']});
   
@@ -89,20 +89,33 @@ export class StoriesController {
       throw new Error('Story not found');
     }
   
+    const { image, fileType } = storyData;
+    let newFilename = "";
+  
+    if (image && fileType) {
+      let fileExtension = fileType.split('/')[1];
+      newFilename = `${Date.now()}.${fileExtension}`;
+    } else if (story.storyInfos.length > 0) {
+      newFilename = story.storyInfos[0].imgUrl; // Use the existing imgUrl
+    }
+  
     // Update the storyInfo
     const newStoryInfo = Object.assign(new StoryInfo(), storyData.storyInfo);
+    newStoryInfo.imgUrl = newFilename;
     newStoryInfo.story = story; // Set the story
     newStoryInfo.createdAt = new Date();
     story.storyInfos.push(newStoryInfo);
-
-    
+  
     // Save the story
     const updatedStory = await storyRepository.save(story);
   
     // Convert the updated story to a StoryDTO
     const storyDTO = new StoryDTO(updatedStory);
   
-    updateStoryInfo(storyGuid, storyDTO.storyInfo);
+    if (image && fileType) {
+      publishImage(image, newFilename, fileType);
+    }
+  
     return storyDTO;
   }
 }
