@@ -325,6 +325,11 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Partial_CommentInfo_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"commentInfoId":{"dataType":"double"},"bodyText":{"dataType":"string"},"createdAt":{"dataType":"datetime"},"comment":{"ref":"Comment"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const templateService = new ExpressTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
 
@@ -339,7 +344,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(StoriesController)),
             ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.createStory)),
 
-            async function StoriesController_createStory(request: ExRequest, response: ExResponse, next: any) {
+            function StoriesController_createStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateStoryDTO"},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
@@ -353,7 +358,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new StoriesController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'createStory',
                 controller,
                 response,
@@ -370,7 +375,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(StoriesController)),
             ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.deleteStory)),
 
-            async function StoriesController_deleteStory(request: ExRequest, response: ExResponse, next: any) {
+            function StoriesController_deleteStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
             };
@@ -383,7 +388,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new StoriesController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'deleteStory',
                 controller,
                 response,
@@ -400,7 +405,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(StoriesController)),
             ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.updateStory)),
 
-            async function StoriesController_updateStory(request: ExRequest, response: ExResponse, next: any) {
+            function StoriesController_updateStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
                     storyData: {"in":"body","name":"storyData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"storyInfo":{"ref":"Partial_StoryInfo_","required":true}}},
@@ -414,7 +419,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new StoriesController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'updateStory',
                 controller,
                 response,
@@ -431,7 +436,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(CommentsController)),
             ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.createComment)),
 
-            async function CommentsController_createComment(request: ExRequest, response: ExResponse, next: any) {
+            function CommentsController_createComment(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateCommentDTO"},
@@ -445,7 +450,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new CommentsController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'createComment',
                 controller,
                 response,
@@ -462,7 +467,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(CommentsController)),
             ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.deleteComment)),
 
-            async function CommentsController_deleteComment(request: ExRequest, response: ExResponse, next: any) {
+            function CommentsController_deleteComment(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     commentGuid: {"in":"path","name":"commentGuid","required":true,"dataType":"string"},
             };
@@ -475,8 +480,39 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new CommentsController();
 
-              await templateService.apiHandler({
+              templateService.apiHandler({
                 methodName: 'deleteComment',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/comments/:commentGuid',
+            ...(fetchMiddlewares<RequestHandler>(CommentsController)),
+            ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.updateComment)),
+
+            function CommentsController_updateComment(request: ExRequest, response: ExResponse, next: any) {
+            const args: Record<string, TsoaRoute.ParameterSchema> = {
+                    commentGuid: {"in":"path","name":"commentGuid","required":true,"dataType":"string"},
+                    commentData: {"in":"body","name":"commentData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"commentInfo":{"ref":"Partial_CommentInfo_","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args, request, response });
+
+                const controller = new CommentsController();
+
+              templateService.apiHandler({
+                methodName: 'updateComment',
                 controller,
                 response,
                 next,

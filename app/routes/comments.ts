@@ -1,4 +1,4 @@
-import {Body, Post, Route, Request, Delete, Path} from "tsoa";
+import {Body, Post, Route, Request, Delete, Path, Put} from "tsoa";
 import express from "express";
 import {CreateCommentDTO} from "../entities/interfaces/CreateCommentDTO";
 import {CommentDTO} from "../entities/DTOs/CommentDTO";
@@ -10,6 +10,7 @@ import {Story} from "../entities/entities/Story"
 import {HttpError} from "routing-controllers";
 import {publishNewComment} from "../rabbitMQ/publishNewComment"
 import {deleteComment} from "../rabbitMQ/deleteComment"
+import {updateCommentInfo} from "../rabbitMQ/updateCommentInfo"
 
 const router = express.Router();
 
@@ -85,6 +86,35 @@ export class CommentsController{
         // Publish the delete event to the queue
         deleteComment(commentGuid);
     }
+
+    @Put('{commentGuid}')
+public async updateComment(@Path() commentGuid: string, @Body() commentData: { commentInfo: Partial<CommentInfo> }): Promise<any> {
+    const commentRepository = getRepository(Comment);
+    const comment = await commentRepository.findOne({ where: { commentGuid: commentGuid }, relations: ['commentInfos', 'user', 'user.userInfos']});
+
+    if (!comment) {
+        throw new Error('Comment not found');
+    }
+
+    // Update the commentInfo
+    const newCommentInfo = Object.assign(new CommentInfo(), commentData.commentInfo);
+    newCommentInfo.comment = comment; // Set the comment
+    newCommentInfo.createdAt = new Date();
+    comment.commentInfos.push(newCommentInfo);
+
+    // Save the comment
+    const updatedComment = await commentRepository.save(comment);
+
+    // Convert the updated comment to a CommentDTO
+    const commentDTO = new CommentDTO(updatedComment);
+
+    // Update each CommentInfo in commentInfos
+    commentDTO.commentInfos.forEach((commentInfoDTO) => {
+        updateCommentInfo(commentGuid, commentInfoDTO);
+    });
+
+    return commentDTO;
+}
 }
 
 export default router;
