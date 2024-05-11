@@ -8,6 +8,7 @@ import { createConnection } from 'typeorm';
 import { config } from 'dotenv';
 import {expressjwt} from "express-jwt"
 import jwt from "jsonwebtoken"
+import multer from 'multer';
 
 
 /***
@@ -47,7 +48,7 @@ app.use(cors({ origin: process.env.CORS_ORIGIN }));
 /***
  * Middleware to parse the request body as JSON
 */
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 
 
 // Use your custom middleware
