@@ -4,6 +4,7 @@ import { StoryInfo } from '../entities/entities/StoryInfo';
 import { User } from '../entities/entities/User';
 import { getRepository } from 'typeorm';
 import publishNewStory from '../rabbitMQ/publishNewStory';
+import publishImage from '../rabbitMQ/publishImage';
 import { Body, Post, Delete, Route, Path, Put, UploadedFile } from 'tsoa';
 import { HttpError } from 'routing-controllers';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
@@ -62,6 +63,7 @@ export class StoriesController {
     const storyDTO = new StoryDTO(newStory)
 
     publishNewStory(storyDTO);
+    publishImage(file);
     return storyDTO;
   }
 
