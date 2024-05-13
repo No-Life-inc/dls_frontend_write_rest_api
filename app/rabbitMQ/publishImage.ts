@@ -26,10 +26,8 @@ export function publishImage(image: string, filename: string, fileType: string) 
       fileType
     };
 
-    // Convert the object to a string
-    const imageString = JSON.stringify(imageData);
 
-    publishToQueue(imageString, channel, "new_images");
+    publishToQueue(imageData, channel, "new_images");
   } else {
     console.error("Failed to get channel for new_images");
   }
