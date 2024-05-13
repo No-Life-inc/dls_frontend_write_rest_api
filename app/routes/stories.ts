@@ -4,13 +4,16 @@ import { StoryInfo } from '../entities/entities/StoryInfo';
 import { User } from '../entities/entities/User';
 import { getRepository } from 'typeorm';
 import publishNewStory from '../rabbitMQ/publishNewStory';
-import { Body, Post, Delete, Route, Path, Put } from 'tsoa';
+import publishImage from '../rabbitMQ/publishImage';
+import { Body, Post, Delete, Route, Path, Put} from 'tsoa';
 import { HttpError } from 'routing-controllers';
 import { updateStoryInfo } from '../rabbitMQ/updateStoryInfo';
 import { StoryDTO } from '../entities/DTOs/StoryDTO';
 import {deleteStory} from '../rabbitMQ/deleteStory';
 import { CreateStoryDTO } from '../entities/interfaces/CreateStoryDTO';
 import { Request } from 'tsoa';
+import moment from 'moment';
+
 
 const router = express.Router();
 // TODO: Get Ropository from TypeORM is deprecated, use getCustomRepository instead
@@ -19,7 +22,6 @@ const router = express.Router();
 export class StoriesController {
   @Post()
   public async createStory(@Body() requestBody: CreateStoryDTO, @Request() req: any): Promise<StoryDTO> {
-    console.log(req.userGuid)
     const userGuid = req.userGuid;
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { userGuid: userGuid }, relations: ['userInfos']});
@@ -27,6 +29,11 @@ export class StoriesController {
     if (!user) {
       throw new HttpError(400, 'User not found');
     }
+    
+    const { image, fileType } = requestBody;
+
+    let fileExtension = requestBody.fileType.split('/')[1];
+    let newFilename = `${Date.now()}.${fileExtension}`;
 
     const storyRepository = getRepository(Story);
     let newStory = new Story();
@@ -39,7 +46,7 @@ export class StoriesController {
     let newStoryInfo = new StoryInfo();
     newStoryInfo.title = requestBody.storyInfo.title;
     newStoryInfo.bodyText = requestBody.storyInfo.bodyText;
-    newStoryInfo.imgUrl = requestBody.storyInfo.imgUrl;
+    newStoryInfo.imgUrl = newFilename;
     newStoryInfo.createdAt = new Date();
     newStoryInfo.story = newStory; // Set the story
     newStory.storyInfos = [newStoryInfo];
@@ -53,6 +60,7 @@ export class StoriesController {
     const storyDTO = new StoryDTO(newStory)
 
     publishNewStory(storyDTO);
+    publishImage(image, newFilename, fileType);
     return storyDTO;
   }
 
@@ -73,7 +81,7 @@ export class StoriesController {
   }
 
   @Put('{storyGuid}')
-  public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo> }): Promise<any> {
+  public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo>, image: string, fileType: string }): Promise<any> {
     const storyRepository = getRepository(Story);
     const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }, relations: ['storyInfos', 'user', 'user.userInfos']});
   
@@ -81,20 +89,33 @@ export class StoriesController {
       throw new Error('Story not found');
     }
   
+    const { image, fileType } = storyData;
+    let newFilename = "";
+  
+    if (image && fileType) {
+      let fileExtension = fileType.split('/')[1];
+      newFilename = `${Date.now()}.${fileExtension}`;
+    } else if (story.storyInfos.length > 0) {
+      newFilename = story.storyInfos[0].imgUrl; // Use the existing imgUrl
+    }
+  
     // Update the storyInfo
     const newStoryInfo = Object.assign(new StoryInfo(), storyData.storyInfo);
+    newStoryInfo.imgUrl = newFilename;
     newStoryInfo.story = story; // Set the story
     newStoryInfo.createdAt = new Date();
     story.storyInfos.push(newStoryInfo);
-
-    
+  
     // Save the story
     const updatedStory = await storyRepository.save(story);
   
     // Convert the updated story to a StoryDTO
     const storyDTO = new StoryDTO(updatedStory);
   
-    updateStoryInfo(storyGuid, storyDTO.storyInfo);
+    if (image && fileType) {
+      publishImage(image, newFilename, fileType);
+    }
+  
     return storyDTO;
   }
 }

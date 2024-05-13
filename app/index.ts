@@ -8,6 +8,7 @@ import { createConnection } from 'typeorm';
 import { config } from 'dotenv';
 import {expressjwt} from "express-jwt"
 import jwt from "jsonwebtoken"
+import multer from 'multer';
 
 
 /***
@@ -47,30 +48,8 @@ app.use(cors({ origin: process.env.CORS_ORIGIN }));
 /***
  * Middleware to parse the request body as JSON
 */
-app.use(express.json());
+app.use(express.json({ limit: '2mb' }));
 
-// app.use('/v1', expressjwt({
-//   secret: process.env.JWT_SECRET,
-//   algorithms: ['HS256'],
-// }).unless({ path: ["/api-docs"] }), (req, res, next) => {
-//   const token = req.headers.authorization?.split(" ")[1];
-
-//   console.log("Token:", token); 
-  
-//   if (!token) {
-//     return res.status(401).json({ error: "Unauthorized: Missing token" });
-//   }
-  
-//   try {
-//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET) as {id: string};
-//     req.userGuid = decodedToken.id;
-//     console.log("This is the decoded token:",decodedToken)
-//     next();
-//   } catch (error) {
-//     console.error("Error decoding token:", error);
-//     return res.status(401).json({ error: "Unauthorized: Invalid token" });
-//   }
-// });
 
 // Use your custom middleware
 app.use('/v1', (req, res, next) => {
@@ -129,6 +108,12 @@ queueManager.setupQueue('delete_story').then((ch) => {
 
 queueManager.setupQueue('delete_comment').then((ch) => {
   console.log('RabbitMQ delete_comment setup completed');
+}).catch(err => {
+  console.error('Failed to setup RabbitMQ', err);
+});
+
+queueManager.setupQueue('new_images').then((ch) => {
+  console.log('RabbitMQ new_images setup completed');
 }).catch(err => {
   console.error('Failed to setup RabbitMQ', err);
 });
