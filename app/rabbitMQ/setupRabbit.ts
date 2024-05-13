@@ -16,6 +16,7 @@ const RABBIT_PW = process.env.RABBITPW
  */
 const AMQP_URL = `amqp://${RABBIT_USER}:${RABBIT_PW}@${RABBIT_URL}`;
 
+
 /**
  * Singleton class to manage RabbitMQ channels
  * @param {string} queueName - The name of the queue to set up
