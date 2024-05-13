@@ -344,7 +344,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(StoriesController)),
             ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.createStory)),
 
-            function StoriesController_createStory(request: ExRequest, response: ExResponse, next: any) {
+            async function StoriesController_createStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateStoryDTO"},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
@@ -358,7 +358,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new StoriesController();
 
-              templateService.apiHandler({
+              await templateService.apiHandler({
                 methodName: 'createStory',
                 controller,
                 response,
@@ -375,7 +375,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(StoriesController)),
             ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.deleteStory)),
 
-            function StoriesController_deleteStory(request: ExRequest, response: ExResponse, next: any) {
+            async function StoriesController_deleteStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
             };
@@ -388,7 +388,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new StoriesController();
 
-              templateService.apiHandler({
+              await templateService.apiHandler({
                 methodName: 'deleteStory',
                 controller,
                 response,
@@ -405,7 +405,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(StoriesController)),
             ...(fetchMiddlewares<RequestHandler>(StoriesController.prototype.updateStory)),
 
-            function StoriesController_updateStory(request: ExRequest, response: ExResponse, next: any) {
+            async function StoriesController_updateStory(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     storyGuid: {"in":"path","name":"storyGuid","required":true,"dataType":"string"},
                     storyData: {"in":"body","name":"storyData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"storyInfo":{"ref":"Partial_StoryInfo_","required":true}}},
@@ -419,7 +419,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new StoriesController();
 
-              templateService.apiHandler({
+              await templateService.apiHandler({
                 methodName: 'updateStory',
                 controller,
                 response,
@@ -436,7 +436,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(CommentsController)),
             ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.createComment)),
 
-            function CommentsController_createComment(request: ExRequest, response: ExResponse, next: any) {
+            async function CommentsController_createComment(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"CreateCommentDTO"},
@@ -450,7 +450,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new CommentsController();
 
-              templateService.apiHandler({
+              await templateService.apiHandler({
                 methodName: 'createComment',
                 controller,
                 response,
@@ -467,7 +467,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(CommentsController)),
             ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.deleteComment)),
 
-            function CommentsController_deleteComment(request: ExRequest, response: ExResponse, next: any) {
+            async function CommentsController_deleteComment(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     commentGuid: {"in":"path","name":"commentGuid","required":true,"dataType":"string"},
             };
@@ -480,7 +480,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new CommentsController();
 
-              templateService.apiHandler({
+              await templateService.apiHandler({
                 methodName: 'deleteComment',
                 controller,
                 response,
@@ -497,7 +497,7 @@ export function RegisterRoutes(app: Router) {
             ...(fetchMiddlewares<RequestHandler>(CommentsController)),
             ...(fetchMiddlewares<RequestHandler>(CommentsController.prototype.updateComment)),
 
-            function CommentsController_updateComment(request: ExRequest, response: ExResponse, next: any) {
+            async function CommentsController_updateComment(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     commentGuid: {"in":"path","name":"commentGuid","required":true,"dataType":"string"},
                     commentData: {"in":"body","name":"commentData","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"commentInfo":{"ref":"Partial_CommentInfo_","required":true}}},
@@ -511,7 +511,7 @@ export function RegisterRoutes(app: Router) {
 
                 const controller = new CommentsController();
 
-              templateService.apiHandler({
+              await templateService.apiHandler({
                 methodName: 'updateComment',
                 controller,
                 response,

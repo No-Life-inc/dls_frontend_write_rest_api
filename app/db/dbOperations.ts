@@ -1,9 +1,10 @@
 import sql from 'mssql';
 /**
- * Get a specific user by their user_guid
- * @param pool Connection pool for database connections
- * @param user_guid Unique identifier
- * @returns Returns a user object
+ * Retrieves a specific user by their user_guid from the database.
+ * 
+ * @param {sql.ConnectionPool} pool - The connection pool for database connections.
+ * @param {string} user_guid - The unique identifier of the user.
+ * @returns {Promise<any>} A promise that resolves to a user object.
  */
 export const getUserById = async (pool: any, user_guid: any) => {
     return await pool.request()
@@ -12,15 +13,16 @@ export const getUserById = async (pool: any, user_guid: any) => {
 };
 
 /**
- * Inserting a new story into the database.
- * @param pool Connection pool for database connections
- * @param story_guid Unique identifier
- * @param title Title of the story
- * @param body_text Story text
- * @param img_url Story image URL if available
- * @param created_at Creation time of story
- * @param user_id Unique identifier of the user who created the story
- * @returns Returns a story object
+ * Inserts a new story into the database.
+ * 
+ * @param {sql.ConnectionPool} pool - The connection pool for database connections.
+ * @param {string} story_guid - The unique identifier of the story.
+ * @param {string} title - The title of the story.
+ * @param {string} body_text - The text of the story.
+ * @param {string} img_url - The URL of the story image (if available).
+ * @param {Date} created_at - The creation time of the story.
+ * @param {number} user_id - The unique identifier of the user who created the story.
+ * @returns {Promise<any>} A promise that resolves to a story object.
  */
 export const insertStory = async (pool: any, story_guid: any, title: any, body_text: any, img_url: any, created_at: any, user_id: any) => {
     return await pool.request()

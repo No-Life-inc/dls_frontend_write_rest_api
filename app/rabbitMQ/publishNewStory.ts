@@ -5,9 +5,13 @@ import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
 
 /**
- * Function to publish a new story to the RabbitMQ queue
- * @param story - The story to publish
- * @returns void
+ * Publishes a new story to a RabbitMQ queue for processing.
+ * 
+ * @remarks
+ * This function publishes a StoryDTO object to the RabbitMQ queue named "new_stories".
+ * 
+ * @param {StoryDTO} story - The StoryDTO object representing the new story.
+ * @returns {void}
  */
 export function publishNewStory(story: StoryDTO) {
   // Get the QueueManager instance and set up the queue

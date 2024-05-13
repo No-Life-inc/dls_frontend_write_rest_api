@@ -15,8 +15,18 @@ import { Request } from 'tsoa';
 const router = express.Router();
 // TODO: Get Ropository from TypeORM is deprecated, use getCustomRepository instead
 // TODO: Use DTOs instead of Entities (Maybe)
+/**
+ * Controller for handling story-related endpoints.
+ */
 @Route('/stories')
 export class StoriesController {
+   /**
+   * Endpoint to create a new story.
+   * 
+   * @param {CreateStoryDTO} requestBody - The request body containing the story data.
+   * @param {Request} req - The request object.
+   * @returns {Promise<StoryDTO>} A Promise resolving to the created story DTO.
+   */
   @Post()
   public async createStory(@Body() requestBody: CreateStoryDTO, @Request() req: any): Promise<StoryDTO> {
     console.log(req.userGuid)
@@ -56,6 +66,12 @@ export class StoriesController {
     return storyDTO;
   }
 
+  /**
+   * Endpoint to delete a story by its GUID.
+   * 
+   * @param {string} storyGuid - The GUID of the story to delete.
+   * @returns {Promise<any>} A Promise resolving to the result of the deletion.
+   */
   @Delete('{storyGuid}')
   public async deleteStory(@Path() storyGuid: string): Promise<any> {
     const storyRepository = getRepository(Story);
@@ -72,6 +88,13 @@ export class StoriesController {
     deleteStory(storyGuid);
   }
 
+  /**
+   * Endpoint to update a story by its GUID.
+   * 
+   * @param {string} storyGuid - The GUID of the story to update.
+   * @param {{ storyInfo: Partial<StoryInfo> }} storyData - The data to update the story with.
+   * @returns {Promise<any>} A Promise resolving to the updated story DTO.
+   */
   @Put('{storyGuid}')
   public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo> }): Promise<any> {
     const storyRepository = getRepository(Story);

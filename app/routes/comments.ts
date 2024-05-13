@@ -14,8 +14,18 @@ import {updateCommentInfo} from "../rabbitMQ/updateCommentInfo"
 
 const router = express.Router();
 
+/**
+ * Controller for handling comments related endpoints.
+ */
 @Route('/comments')
 export class CommentsController{
+    /**
+     * Endpoint to create a new comment.
+     * 
+     * @param {Request} req - The request object.
+     * @param {CreateCommentDTO} requestBody - The request body containing the comment data.
+     * @returns {Promise<CommentDTO>} A Promise resolving to the created comment DTO.
+     */
     @Post()
     public async createComment(@Request() req: any, @Body() requestBody: CreateCommentDTO): Promise<CommentDTO>{
         console.log(req.userGuid)
@@ -71,6 +81,12 @@ export class CommentsController{
         return commentDTO;
     }
 
+    /**
+     * Endpoint to delete a comment by its GUID.
+     * 
+     * @param {string} commentGuid - The GUID of the comment to delete.
+     * @returns {Promise<any>} A Promise resolving to the result of the deletion.
+     */
     @Delete('{commentGuid}')
     public async deleteComment(@Path() commentGuid: string): Promise<any> {
         const commentRepository = getRepository(Comment);
@@ -87,8 +103,15 @@ export class CommentsController{
         deleteComment(commentGuid);
     }
 
+    /**
+     * Endpoint to update a comment by its GUID.
+     * 
+     * @param {string} commentGuid - The GUID of the comment to update.
+     * @param {{ commentInfo: Partial<CommentInfo> }} commentData - The data to update the comment with.
+     * @returns {Promise<any>} A Promise resolving to the updated comment DTO.
+     */
     @Put('{commentGuid}')
-public async updateComment(@Path() commentGuid: string, @Body() commentData: { commentInfo: Partial<CommentInfo> }): Promise<any> {
+    public async updateComment(@Path() commentGuid: string, @Body() commentData: { commentInfo: Partial<CommentInfo> }): Promise<any> {
     const commentRepository = getRepository(Comment);
     const comment = await commentRepository.findOne({ where: { commentGuid: commentGuid }, relations: ['commentInfos', 'user', 'user.userInfos']});
 

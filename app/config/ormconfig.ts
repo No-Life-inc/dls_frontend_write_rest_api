@@ -3,6 +3,20 @@ import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 dotenv.config();
 
+/**
+ * Represents a data source configuration for connecting to a Microsoft SQL Server database.
+ * 
+ * The DataSource object is configured with connection details retrieved from environment variables.
+ * 
+ * @remarks
+ * The following environment variables are used:
+ * - MSSERVER: The host of the database server.
+ * - DB_PORT: The port number of the database server. If not provided, defaults to 1433.
+ * - MSUSER: The username for authentication.
+ * - MSPW: The password for authentication.
+ * - MSDB: The name of the database to connect to.
+ */
+
 const connectDB = new DataSource({
     type: "mssql",
     host: process.env.MSSERVER,

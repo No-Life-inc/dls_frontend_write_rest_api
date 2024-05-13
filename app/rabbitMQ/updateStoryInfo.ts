@@ -4,7 +4,12 @@ import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
 
-
+/**
+ * Updates the information of a story and publishes the update to a RabbitMQ queue.
+ * @param {string} storyGuid - The GUID of the story to update.
+ * @param {Partial<StoryInfo>} updatedStoryInfo - The updated story information.
+ * @returns {void}
+ */
   export function updateStoryInfo(storyGuid: String,updatedStoryInfo: Partial<StoryInfo>) {
     // Get the QueueManager instance and set up the queue
     const queueManager = QueueManager.getInstance();

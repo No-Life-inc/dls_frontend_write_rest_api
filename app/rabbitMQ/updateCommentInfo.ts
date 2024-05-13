@@ -3,6 +3,12 @@ import { CommentInfo } from "../entities/entities/CommentInfo";
 import { publishToQueue } from "./setupRabbit";
 import { QueueManager } from "./setupRabbit"; // Import setupQueue
 
+/**
+ * Updates the information of a comment and publishes the update to a RabbitMQ queue.
+ * @param {string} commentGuid - The GUID of the comment to update.
+ * @param {Partial<CommentInfo>} updatedCommentInfo - The updated comment information.
+ * @returns {void}
+ */
 export function updateCommentInfo(commentGuid: String, updatedCommentInfo: Partial<CommentInfo>) {
     // Get the QueueManager instance and set up the queue
     const queueManager = QueueManager.getInstance();

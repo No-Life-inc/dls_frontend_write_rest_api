@@ -14,6 +14,14 @@ import jwt from "jsonwebtoken"
  * Load environment variables from a .env file into process.env
 */
 config();
+
+/**
+ * Augment the Express Request interface to include userGuid property.
+ * @global
+ * @namespace Express
+ * @interface Request
+ * @property {string} [userGuid] - The GUID of the user making the request.
+ */
 declare global {
   namespace Express {
     interface Request {
@@ -22,7 +30,10 @@ declare global {
   }
 }
 
-
+/**
+ * Database connection options.
+ * @type {import('typeorm').ConnectionOptions}
+ */
 const connectionOptions = {
   name: "default",
   type: "mssql" as const,
@@ -39,9 +50,21 @@ const connectionOptions = {
   }
 };
 
+/**
+ * Port the server will listen on.
+ * @type {number|string}
+ */
 const PORT = process.env.PORT || 3000;
 
+/**
+ * Express application instance.
+ * @type {express.Application}
+ */
 const app = express();
+
+/**
+ * Middleware to allow cross-origin resource sharing.
+ */
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 /***
@@ -49,30 +72,10 @@ app.use(cors({ origin: process.env.CORS_ORIGIN }));
 */
 app.use(express.json());
 
-// app.use('/v1', expressjwt({
-//   secret: process.env.JWT_SECRET,
-//   algorithms: ['HS256'],
-// }).unless({ path: ["/api-docs"] }), (req, res, next) => {
-//   const token = req.headers.authorization?.split(" ")[1];
 
-//   console.log("Token:", token); 
-  
-//   if (!token) {
-//     return res.status(401).json({ error: "Unauthorized: Missing token" });
-//   }
-  
-//   try {
-//     const decodedToken = jwt.verify(token, process.env.JWT_SECRET) as {id: string};
-//     req.userGuid = decodedToken.id;
-//     console.log("This is the decoded token:",decodedToken)
-//     next();
-//   } catch (error) {
-//     console.error("Error decoding token:", error);
-//     return res.status(401).json({ error: "Unauthorized: Invalid token" });
-//   }
-// });
-
-// Use your custom middleware
+/**
+ * Middleware to authenticate JWT token.
+ */
 app.use('/v1', (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -95,8 +98,13 @@ app.use('/v1', (req, res, next) => {
   }
 });
 
-// Get the QueueManager instance and set up the queue
+/**
+ * RabbitMQ QueueManager instance.
+ * @type {QueueManager}
+ */
 const queueManager = QueueManager.getInstance();
+
+// Setup RabbitMQ queues
 queueManager.setupQueue('new_stories').then((ch) => {
   console.log('RabbitMQ new_stories setup completed');
 }).catch(err => {
@@ -133,10 +141,17 @@ queueManager.setupQueue('delete_comment').then((ch) => {
   console.error('Failed to setup RabbitMQ', err);
 });
 
+/**
+ * Express Router instance.
+ * @type {express.Router}
+ */
 const router = express.Router();
 
 // TODO: createConnection is deprecated, What else can be used?
 // TODO: ormconfig.json has to use the environment variables
+/**
+ * Establishes a connection to the database and starts the server.
+ */
 createConnection(connectionOptions).then(async connection => {
   // Your previous setup code here
   
