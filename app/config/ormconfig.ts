@@ -9,7 +9,7 @@ const connectDB = new DataSource({
     port: parseInt(process.env.DB_USER || "1433"),
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_FRONTEND,
+    database: process.env.WRITE_DB,
     options: {
         encrypt: true,
         trustServerCertificate: true

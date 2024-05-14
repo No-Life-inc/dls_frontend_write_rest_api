@@ -31,7 +31,7 @@ const connectionOptions = {
   port: Number(process.env.WRITE_DB_SERVER_PORT),
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_FRONTEND,
+  database: process.env.WRITE_DB,
   synchronize: false,
   entities: ["app/entities/entities/*.ts"],
   options: {

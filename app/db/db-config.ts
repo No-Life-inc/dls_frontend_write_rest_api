@@ -8,7 +8,7 @@ dotenv.config();
 const MS_USER = process.env.DB_USER || " ";
 const MS_PW = process.env.DB_PASSWORD || " ";
 const MS_URL = process.env.DB_SERVER || " ";
-const MS_DB = process.env.DB_FRONTEND || " ";
+const MS_DB = process.env.WRITE_DB || " ";
 
 /**
  *  RabbitMQ configuration
