@@ -1,5 +1,5 @@
 {
-  "name": "dls_frontend_write_rest_api",
+  "name": "dls_write_api",
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
