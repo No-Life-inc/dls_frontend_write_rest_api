@@ -118,6 +118,12 @@ queueManager.setupQueue('new_images').then((ch) => {
   console.error('Failed to setup RabbitMQ', err);
 });
 
+queueManager.setupQueue('new_comment_on_story').then((ch) => {
+  console.log('RabbitMQ new_comment_on_story setup completed');
+}).catch(err => {
+  console.error('Failed to setup RabbitMQ', err);
+});
+
 const router = express.Router();
 
 // TODO: createConnection is deprecated, What else can be used?
