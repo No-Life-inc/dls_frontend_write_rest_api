@@ -36,6 +36,13 @@ export class StoriesController {
     let newFilename = `${Date.now()}.${fileExtension}`;
 
     const storyRepository = getRepository(Story);
+
+    // Check if a story with the provided storyGuid already exists
+    const existingStory = await storyRepository.findOne({ where: { storyGuid: requestBody.storyGuid } });
+    if (existingStory) {
+      throw new HttpError(400, 'Story with this GUID already exists');
+    }
+
     let newStory = new Story();
     //insert the data from the request body into the newStory object
     
@@ -83,16 +90,28 @@ export class StoriesController {
   @Put('{storyGuid}')
   public async updateStory(@Path() storyGuid: string, @Body() storyData: { storyInfo: Partial<StoryInfo>, image: string, fileType: string }): Promise<any> {
     const storyRepository = getRepository(Story);
+    const storyInfoRepository = getRepository(StoryInfo);
     const story = await storyRepository.findOne({ where: { storyGuid: storyGuid }, relations: ['storyInfos', 'user', 'user.userInfos']});
   
     if (!story) {
       throw new Error('Story not found');
     }
+
+    // Get the latest StoryInfo
+  const latestStoryInfo = story.storyInfos.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())[0];
+
+  // Compare the provided timestamp with the latest StoryInfo's createdAt timestamp
+  
+  const providedTimestamp = new Date(storyData.storyInfo.createdAt);
+  if (latestStoryInfo && latestStoryInfo.createdAt > providedTimestamp) {
+    // If the latest StoryInfo is newer, do not update the story
+    throw new Error('The story has been updated since the provided timestamp');
+  }
   
     const { image, fileType } = storyData;
     let newFilename = "";
   
-    if (image && fileType) {
+    if (image && fileType && image !== "" && fileType !== "") {
       let fileExtension = fileType.split('/')[1];
       newFilename = `${Date.now()}.${fileExtension}`;
     } else if (story.storyInfos.length > 0) {
@@ -104,6 +123,12 @@ export class StoriesController {
     newStoryInfo.imgUrl = newFilename;
     newStoryInfo.story = story; // Set the story
     newStoryInfo.createdAt = new Date();
+
+    // If the title is an empty string, do not overwrite it
+    if (storyData.storyInfo.title === "") {
+      newStoryInfo.title = latestStoryInfo.title;
+    }
+
     story.storyInfos.push(newStoryInfo);
   
     // Save the story
@@ -111,8 +136,18 @@ export class StoriesController {
   
     // Convert the updated story to a StoryDTO
     const storyDTO = new StoryDTO(updatedStory);
+
+    const newStoryInfoData = {
+      title: newStoryInfo.title,
+      bodyText: newStoryInfo.bodyText,
+      imgUrl: newStoryInfo.imgUrl,
+      createdAt: newStoryInfo.createdAt,
+      // Exclude the story property to avoid circular reference
+    };
+
+    updateStoryInfo(storyGuid, newStoryInfoData);
   
-    if (image && fileType) {
+    if (image && fileType && image !== "" && fileType !== "") {
       publishImage(image, newFilename, fileType);
     }
   

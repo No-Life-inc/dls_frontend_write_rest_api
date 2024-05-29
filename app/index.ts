@@ -54,8 +54,6 @@ app.use(express.json({ limit: '2mb' }));
 // Use your custom middleware
 app.use('/v1', (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-
-  console.log("Token:", token); 
   
   if (!token) {
     return res.status(401).json({ error: "Unauthorized: Missing token" });
@@ -65,8 +63,6 @@ app.use('/v1', (req, res, next) => {
   try {
     const decodedToken = jwt.verify(token, secret) as {id: string};
     req.userGuid = decodedToken.id;
-    console.log(req.userGuid)
-    console.log("This is the decoded token:",decodedToken)
     next();
   } catch (error) {
     console.error("Error decoding token:", error);

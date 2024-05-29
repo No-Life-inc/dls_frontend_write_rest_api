@@ -22,7 +22,6 @@ export class CommentsController {
     @Request() req: any,
     @Body() requestBody: CreateCommentDTO
   ): Promise<CommentDTO> {
-    console.log(req.userGuid);
     const userGuid = req.userGuid;
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({
@@ -44,6 +43,15 @@ export class CommentsController {
       throw new HttpError(404, "Story not found");
     }
 
+    const commentRepository = getRepository(Comment);
+
+    // Check if a comment with the provided commentGuid already exists
+    const existingComment = await commentRepository.findOne({ where: { commentGuid: requestBody.commentGuid } });
+    if (existingComment) {
+      throw new HttpError(400, 'Comment with this GUID already exists');
+    }
+
+
     let newComment = new Comment();
     newComment.commentGuid = requestBody.commentGuid;
     newComment.createdAt = new Date();
@@ -64,8 +72,6 @@ export class CommentsController {
     // Add the new comment to the story's comments array
     story.comments.push(newComment);
 
-    const commentRepository = getRepository(Comment);
-
     try {
       await storyRepository.save(story);
       await commentRepository.save(newComment);
@@ -74,7 +80,6 @@ export class CommentsController {
     }
 
     const commentDTO = new CommentDTO(newComment);
-    console.log(commentDTO);
 
     publishNewComment(commentDTO);
 
